@@ -2,14 +2,14 @@
 
 require __DIR__.'/Parcela.php';
 
-class Mensalidade extends Parcela{
+class Repasse extends Parcela{
 
     /**
      * Tipo de parcela conforme especificado no banco de dados na tabela 'contrato_parcela_tipo'
-     * valor 1 = mensalidade
+     * valor 2 = repasse
      * @var int
      */
-    private $BD_PARCELA_TIPO = 1;  
+    private $BD_PARCELA_TIPO = 2;  
 
     /**
      * *********** CONSTRUCT ***********

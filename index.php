@@ -1,15 +1,55 @@
 <?php
 
+// var_dump($controller); exit; 
+// print_r($page); echo "</pre>"; exit; 
+
 // include_once './app/entities/Locatario.php';
-include_once './app/entities/Contrato.php';
-include_once './app/services/Mensalidade.php';
 
-$ob = new Contrato(21,12,'2022-02-10', 12 , 10 , 1800.00 , 150.00 , 100.00 );
+// $arr = [
+//     'NOME' => 'JOAO',
+//     'EMAIL' => 'JOAO@H',
+//     'TELEFONE' => '1242'
+// ];
 
-$ob2 = new Mensalidade($ob);
+// $ob = new Locatario( $arr );
 
-// $ob->setDataInicio('2022-02-15');
+// $ob->Cadastrar();
 
-echo "<pre>"; print_r($ob); 
-print_r($ob2->gerarMensalidade()); echo "</pre>"; exit; 
+// print_r($ob); echo "</pre>"; exit; 
+
+/**
+ * Nome da view default / home page
+ */
+$PAGE = 'home';
+
+/**
+ * Nome da entidade que o usuario estiver trabalhando
+ */
+$TITULO_APRESENTACAO = 'Bem vindo';
+
+/**
+ * identificar a pagina
+ * pegar Get e verificar se tem arquivo
+ * -- se sim: pegar dados
+ * -- se nao: ir para home page
+ */
+if(isset($_GET['p']))
+{
+    include_once './controller/Routes.php';
+
+    $dataPage = (new Routes())->getController($_GET['p']);
+
+    if($dataPage)
+    {
+        $PAGE = $dataPage->getInclude(); 
+        $TITULO_APRESENTACAO = $dataPage->getTitulo();
+    }
+}
+
+/**
+ * Carregar view
+ */
+include __DIR__.'/views/layout/header.php';
+include __DIR__.'\/views/'.$PAGE.'.php';
+include __DIR__.'/views/layout/footer.php';
  

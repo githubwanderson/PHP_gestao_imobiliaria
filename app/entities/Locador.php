@@ -1,27 +1,34 @@
 <?php
 
-include './app/entities/Cliente.php';
+require __DIR__.'/Cliente.php';
 
 class Locador extends Cliente{
+
+    /**
+     * Tipo de cliente conforme especificado no banco de dados na tabela 'cliente_tipo'
+     * valor 1 = LOCADOR
+     * @var int
+     */
+    private $TIPO = 1; 
 
     /**
      * Dia para repasse do aluguel
      * @var integer 1-31
      */
-    private $diaRepasse;
+    private $DIA_REPASSE;
 
     /**
      * *********** CONSTRUCT ***********
      * 
-     * @param string $nome $email $telefone
-     * @param integer $diaRepasse
+     * @param array $post [ NOME , EMAIL , TELEFONE ]
+     * @param integer $BD_CLIENTE_TIPO
      * 
      */
-    public function __construct($nome , $email , $telefone , $diaRepasse)
+    public function __construct( $post )
     {
-        parent::__construct($nome , $email , $telefone);
+        parent::__construct($post );
 
-        $this->setDiaRepasse( $diaRepasse );
+        $this->setDiaRepasse( $post['DIA_REPASSE'] );
     }
 
     /**
@@ -34,22 +41,36 @@ class Locador extends Cliente{
      * @param integer 
      * @return boolean
      */
-    public function setDiaRepasse( $diaRepasse ){
+    public function setDiaRepasse( $DIA_REPASSE ){
 
-        if($diaRepasse >= 1 && $diaRepasse <= 31){
-            $this->diaRepasse = $diaRepasse;
-            return true;
+        if($DIA_REPASSE >= 1 && $DIA_REPASSE <= 31){
+            $this->DIA_REPASSE = $DIA_REPASSE;
         }
         else
         {
             return false;
-            // die('Data deve estar entre 01 e 31');
         }
         
     }
 
     public function getDiaRepasse(){
-        return $this->diaRepasse;
+        return $this->DIA_REPASSE;
+    }
+
+    /**
+     * metodo responsavel por cadastrar o obj no banco de dados
+     */
+    public function Cadastrar(){
+
+        // Data do cadastro
+        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
+
+        //inserir no banco
+        $db = new Database('cliente');
+        $this->setId( $db->insert(get_object_vars($this) ) );
+
+        //retornar sucesso
+        return $this->getId();
     }
 
 }

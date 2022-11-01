@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/../database/Database.php';
+
 abstract class Cliente{
 
     /**
@@ -27,16 +29,22 @@ abstract class Cliente{
     protected $telefone;
 
     /**
+     * Datatime do cadastro
+     * @var string
+     */
+    protected $CREATED_DATETIME;
+
+    /**
      * *********** CONSTRUCT ***********
      * 
-     * @param string $nome $email $telefone
+     * @param array $post [ NOME , EMAIL , TELEFONE ]
      * 
      */
-    public function __construct( $nome , $email , $telefone )
+    public function __construct( $post = [] )
     {
-        $this->nome     = $nome;
-        $this->email    = $email;
-        $this->telefone = $telefone;
+        $this->setNome( $post['NOME'] );
+        $this->setEmail( $post['EMAIL'] );
+        $this->setTelefone( $post['TELEFONE']);
     }
 
     /**
@@ -60,7 +68,7 @@ abstract class Cliente{
     }
 
     public function setEmail( $email ){
-        $this->nemailome = $email;
+        $this->email = $email;
     }
 
     public function getEmail(){
@@ -74,5 +82,18 @@ abstract class Cliente{
     public function getTelefone(){
         return $this->telefone;
     }
+
+    public function setCreatedDatatime( $CREATED_DATETIME ){
+        $this->CREATED_DATETIME = $CREATED_DATETIME;
+    }
+
+    public function getCreatedDatatime(){
+        return $this->CREATED_DATETIME;
+    }
+
+    /**
+     * metodo responsavel por cadastrar o obj no banco de dados
+     */
+    public abstract function Cadastrar();
 
 }
