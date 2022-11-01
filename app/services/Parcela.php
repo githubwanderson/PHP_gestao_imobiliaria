@@ -1,112 +1,192 @@
 <?php
 
-abstract class Parcela{
+class Parcela{
 
     /**
      * id da mensalidade
      * @var integer
      */
-    private $idParcela;
+    private $ID;
     
     /**
      * id Contrato
      * @var integer
      */
-    private $idContrato;
+    private $ID_CONTRATO;
+
+    /**
+     * tipo parcela : 1 = MENSALIDADE , 2 = REPASSE
+     * @var integer
+     */
+    private $TIPO;
+
+    /**
+     * Numero parcela
+     * @var integer
+     */
+    private $PARCELA;
 
     /**
      * Valor
      * @var float
      */
-    private $valor;
+    private $VALOR;
 
     /**
      * Data de vencimento
      * @var string
      */
-    private $dataVencimento;
+    private $DT_VENCIMENTO;
 
     /**
-     * Realizado pagamento 1=SIM 2=NÃO
+     * Realizado pagamento : 1=SIM 2=NÃO
      * @var integer
      */
-    private $realizado;
+    private $REALIZADO;
 
     /**
      * Data que foi realizado o pagamento
      * @var integer
      */
-    private $dataRealizado;
+    private $DT_REALIZADO;
+
+    /**
+     * objeto Contrato
+     * @var Contrato
+     */
+    public $contrato;
 
     /**
      * *********** CONSTRUCT ***********
      * 
-     * @param integer  $idContrato , $idParcela
+     * @param Contrato 
      * 
      */             
-    public function __construct( $idContrato , $idParcela = null ){
-        $this->setIdContrato($idContrato);
-        $this->setIdParcela($idParcela);
+    public function __construct( Contrato $contrato = null ){
+        $this->contrato = $contrato;
     }
 
     /**
      * *********** GETTERS AND SETTERS ***********
      */
 
-    public function setIdParcela( $idParcela ){
-        $this->idMensidParcelaalidade = $idParcela;
+    public function setId( $ID ){
+        $this->id = $ID;
     }
 
-    public function getIdParcela(){
-        return $this->idParcela;
+    public function getId(){
+        return $this->ID;
     }
 
-    public function setIdContrato( $idContrato ){
-        $this->idContrato = $idContrato;
+    public function setIdContrato( $ID_CONTRATO ){
+        $this->ID_CONTRATO = $ID_CONTRATO;
     }
 
     public function getIdContrato(){
-        return $this->idContrato;
+        return $this->ID_CONTRATO;
     }
 
-    public function setValor( $valor ){
-        $this->valor = $valor;
+    public function setTipo( $TIPO ){
+        $this->TIPO = $TIPO;
+    }
+
+    public function getTipo(){
+        return $this->TIPO;
+    }
+
+    public function setParcela( $PARCELA ){
+        $this->PARCELA = $PARCELA;
+    }
+
+    public function getParcela(){
+        return $this->PARCELA;
+    }
+
+    public function setValor( $VALOR ){
+        $this->VALOR = $VALOR;
     }
 
     public function getValor(){
-        return $this->valor;
+        return $this->VALOR;
     }
 
-    public function setDataVencimento( $dataVencimento ){
-        $this->dataVencimento = $dataVencimento;
+    public function setDataVencimento( $DT_VENCIMENTO ){
+        $this->DT_VENCIMENTO = $DT_VENCIMENTO;
     }
 
     public function getDataVencimento(){
-        return $this->dataVencimento;
+        return $this->DT_VENCIMENTO;
     }
 
-    public function setRealizado( $realizado ){
-        $this->realizado = $realizado;
+    public function setRealizado( $REALIZADO ){
+        $this->REALIZADO = $REALIZADO;
     }
 
     public function getRealizado(){
-        return $this->realizado;
+        return $this->REALIZADO;
     }
 
-    public function setDataRealizado( $dataRealizado ){
-        $this->dataRealizado = $dataRealizado;
+    public function setDataRealizado( $DT_REALIZADO ){
+        $this->DT_REALIZADO = $DT_REALIZADO;
     }
 
     public function getDataRealizado(){
-        return $this->dataRealizado;
+        return $this->DT_REALIZADO;
     }
 
     /**
-     * Metodo responsavel por listar as parcelas
-     */
+     * Metodo responsavel por gerar parcelas
+     * @var $duracao
+     * @var $data_inicio
+     */ 
+    public function cadastrarParcelas(){    
+
+        $db = new Database('contrato_parcela');
+
+        for ($i=0; $i < $this->contrato->getDuracao(); $i++) { 
+
+            $dt = date('Y-m-01' , strtotime($this->contrato->getDataInicio().' + '.($i+1).' month'));
+
+            $db->insert(
+            [
+                'ID_CONTRATO'   => $this->contrato->getId(),
+                'TIPO'          => $this->getTipo(),
+                'PARCELA'       => $i+1,
+                'VALOR'         => $i == 0 ? $this->valorPrimeiraparcela() : $this->getValor(),
+                'DT_VENCIMENTO' => $dt
+            ]);
+
+        }
+        return true;
+    }
 
     /**
-     * Metodo responsavel por alterar o status da parcela
+     * Metodo responsavel por gerar o valor da primeira mensalidade
+     * Para cobrar o dia em que o contrato foi assinado somar 1 em $qtdeDeDias : $qtdeDeDias + 1
+     * @return float
      */
+    private function valorPrimeiraparcela(){
+
+        /**
+         * obtendo o primeiro dia do contrato e o ultimo dia do mês inicial
+         */
+        $primeiroDia    = date('d', strtotime($this->contrato->getDataInicio()));
+        $ultimoDia      = date('t', strtotime($this->contrato->getDataInicio()));
+
+        /**
+         * Verificar se o dia inicio é diferente de 1 , se sim gerar valor proporcional da primeira mensalidade
+         */
+        if( $primeiroDia != 1 ){
+
+            $valorPorDia    = $this->getValor() / 30;
+            $qtdeDeDias     = $ultimoDia - $primeiroDia;
+            $valorPrimeiraMensalidade = $valorPorDia * $qtdeDeDias;
+        }
+        else
+        {
+            $valorPrimeiraMensalidade = $this->getValor();
+        }
+        return $valorPrimeiraMensalidade;
+    }
 
 }

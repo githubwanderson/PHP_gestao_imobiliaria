@@ -71,8 +71,21 @@ class ConLocador{
     }
 
     /**
-     * Metodo responsavel por gerar a tabela
+     * Metodo responsavel por gerar o head da tabela
      */
+    public function getHeadTabela(){
+
+        return '
+            <tr>
+                <th>ID</th> 	
+                <th>NOME</th> 	
+                <th>EMAIL</th> 
+                <th>TELEFONE</th> 
+                <th>DIA REPASSE</th> 
+                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th> 
+            </tr>
+            ';
+    }
 
 
 

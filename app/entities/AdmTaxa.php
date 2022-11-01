@@ -28,11 +28,12 @@ class AdmTaxa{
      * Deve salvar no banco de dados
      * indisponivel no momento
      */
+
     // public function setValorTaxaAdm( $VALOR ){
     //     $this->VALOR = $VALOR;
     // }
 
-    public function getValorTaxaAdm(){
+    public function getValor(){
         return $this->VALOR;
     }
     

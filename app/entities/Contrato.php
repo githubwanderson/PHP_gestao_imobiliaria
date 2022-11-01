@@ -1,5 +1,7 @@
 <?php
 
+use LDAP\Result;
+
 require __DIR__.'/AdmTaxa.php';
 
 class Contrato{
@@ -126,6 +128,10 @@ class Contrato{
         return $this->DT_INICIO;
     }
 
+    public function getDataFim(){
+        return $this->DT_FIM;
+    }
+
     public function setDuracao( $DURACAO_MES ){
         $this->DURACAO_MES = $DURACAO_MES;
     }
@@ -194,7 +200,7 @@ class Contrato{
      * Metodo responsavel por buscar o valor da taxa de administração
      */
     private function setTaxaAdm(){
-        $this->VALOR_TX_ADM = ( new AdmTaxa() )->getValorTaxaAdm();
+        $this->VALOR_TX_ADM = ( new AdmTaxa() )->getValor();
     }
 
     /**
@@ -202,12 +208,24 @@ class Contrato{
      */
     public function Cadastrar(){
 
+        require_once __DIR__.'/../database/Database.php';
+        require_once __DIR__.'/../services/Mensalidade.php';
+        require_once __DIR__.'/../services/Repasse.php';
+
         // Data do cadastro
         $this->setCreatedDatatime( date('Y-m-d H:i:s') );
 
         //inserir no banco
         $db = new Database('contrato');
         $this->setId( $db->insert(get_object_vars($this) ) );
+
+        //Cadastrar parcelas
+        $p = new Mensalidade( $this );
+        $p->cadastrarParcelas();
+
+        //Cadastrar repasse
+        $r = new Repasse( $this );
+        $r->cadastrarParcelas();
 
         //retornar sucesso
         return $this->getId();

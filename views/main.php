@@ -8,26 +8,19 @@
     </section>
 
     <section>
-        <table class="table mt-3">
+      <div class="table-responsive text-center">
+        <table class="table table-striped table-sm table-hover mt-3">
 
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>TITULO</th>
-                    <th>DESCRIÇÃO</th>
-                    <th>STATUS</th>
-                    <th>DATA</th>
-                    <th>AÇÕES</th>
-                </tr>
+                <?=$dataPage->getHeadTabela()?>
             </thead>
-            <tbody>
-                <?=$resultado=null?>
+            <tbody id="tbody">
             </tbody>
             <tfoot>
-
             </tfoot>
 
         </table>
+      </div>
     </section>
 
 </main>

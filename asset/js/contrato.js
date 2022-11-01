@@ -134,9 +134,13 @@ $('#btnSubmit').click(function()
             {
                 $('#form input').each(function() {
                     $(this).val(''); 
-                })
-                $('.modal').modal('hide')
-                alert('Registro ID:'+dados+' salvo com sucesso.')
+                });
+
+                getTable();
+
+                $('.modal').modal('hide');
+
+                alert('Registro ID:'+dados+' salvo com sucesso.');
             },
             error:(e)=>
             {
@@ -201,10 +205,76 @@ function validaForm(){
             return true
             break;
     }
+}
 
+/**
+ * buscar lista de Locatario e preencher tabela
+ */
+function getTable()
+{
+    dados = [];
+    dados[0]   = "contrato"
+    dados[1]   = "contrato.ATIVO = 1"; 
+    dados[2]   = "cliente b ON b.ID = contrato.ID_CLIENTE JOIN imovel c ON c.ID = contrato.ID_IMOVEL";
+    dados[3]   = null;
+    dados[4]   = null;
+    dados[5]   = "contrato.ID , b.NOME , c.ENDERECO ,  DATE_FORMAT( contrato.DT_INICIO, '%d/%m/%Y' ) DT_INICIO , DATE_FORMAT( contrato.DT_FIM, '%d/%m/%Y' ) DT_FIM";
+
+    // Verificar se ha registro no banco
+    $.ajax(
+    {
+        url:'ajax/tabela.php',
+        type:'post',
+        dataType:'json',
+        data:{dados},
+        success:(dados)=>
+        {
+            if(dados.length > 0)
+            {
+                preenchaTabela(dados)
+            }
+            else
+            {                         
+                $('#tbody').html('<tr><td colspan="5">Não encontrado registros para tabela.</td></tr>');
+            }
+        },
+        error:(e)=>
+        {
+            console.log(e.status, e.statusText);
+        }   
+    });
+}
+
+function preenchaTabela(dados)
+{
+    $('#tbody').html('');
+
+    line = 0
+    body = false;
+    $.each(dados, function(i,v)
+    {           
+        link_editar         = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_repasse        = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_mensalidade    = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+
+        if(line=0)
+        {
+            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_editar+'</td>';    
+            line + '</tr>';  
+        }
+        else
+        {
+            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_editar+'</td>';    
+            line + '</tr>';  
+        }  
+        body = body == false ? line : body + line;
+    });   
+        
+    $('#tbody').html(body);
 
 }
 
 getLocatario()
 getImovel()
 getTaxaAdm()
+getTable()

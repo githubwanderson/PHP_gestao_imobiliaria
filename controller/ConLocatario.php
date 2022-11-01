@@ -66,9 +66,19 @@ class ConLocatario{
     }
 
     /**
-     * Metodo responsavel por gerar a tabela
+     * Metodo responsavel por gerar o head da tabela
      */
+    public function getHeadTabela(){
 
-
+        return '
+            <tr>
+                <th>ID</th> 	
+                <th>NOME</th> 	
+                <th>EMAIL</th> 
+                <th>TELEFONE</th> 
+                <th>EDITAR</th> 
+            </tr>
+            ';
+    }
 
 }

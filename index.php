@@ -3,24 +3,26 @@
 // var_dump($controller); exit; 
 // print_r($page); echo "</pre>"; exit; 
 
-// include_once './controller/ConContrato.php';
-// include_once './app/entities/Contrato.php';
+include_once './app/services/Mensalidade.php';
+include_once './app/entities/Contrato.php';
 
-// $arr = [
-//     'ID_CLIENTE' => '2',
-//     'ID_IMOVEL' => '1',
-//     'DURACAO_MES' => '12',
-//     'DT_INICIO' => '2022-11-01',
-//     'VALOR_ALUGUEL' => '1900',
-//     'VALOR_CONDOMINIO' => '150',
-//     'VALOR_IPTU' => '100'
-// ];
+$arr = [
+    'ID_CLIENTE' => '22',
+    'ID_IMOVEL' => '1',
+    'DURACAO_MES' => '12',
+    'DT_INICIO' => '2022-02-21',
+    'VALOR_ALUGUEL' => '2000',
+    'VALOR_CONDOMINIO' => '800',
+    'VALOR_IPTU' => '200'
+];
 
-// $ob = new Contrato( $arr );
+$ob = new Contrato( $arr );
+
+$ob->Cadastrar();
 
 // ;
 
-// print_r($ob->Cadastrar() ); echo "</pre>"; exit; 
+print_r($ob ); echo "</pre>"; exit; 
 
 /**
  * Nome da view default / home page

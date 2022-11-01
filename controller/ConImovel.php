@@ -60,8 +60,19 @@ class Conimovel{
     }
 
     /**
-     * Metodo responsavel por gerar a tabela
+     * Metodo responsavel por gerar o head da tabela
      */
+    public function getHeadTabela(){
+
+        return '
+            <tr>
+                <th>ID</th> 
+                <th>LOCADOR</th> 
+                <th>ENDEREÇO</th> 
+                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th>
+            </tr>
+            ';
+    }
 
 
 

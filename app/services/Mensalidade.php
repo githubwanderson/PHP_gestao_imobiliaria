@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/Parcela.php';
+require_once __DIR__.'/Parcela.php';
 
 class Mensalidade extends Parcela{
 
@@ -14,32 +14,23 @@ class Mensalidade extends Parcela{
     /**
      * *********** CONSTRUCT ***********
      * 
-     * @param integer $idContrato , $idMensalidade
+     * @param Contrato $contrato
+     * @param integer $idMensalidade
      * 
      */
-    public function __construct( $idContrato , $idMensalidade )
+    public function __construct( $contrato , $idMensalidade = null )
     {
-        parent::__construct($idContrato , $idMensalidade);
+        parent::__construct($contrato );
+        $this->setTipo( $this->BD_PARCELA_TIPO );
+        $this->setValor( $this->valorMensalidade() );
     }
 
     /**
-     * *********** GETTERS AND SETTERS ***********
+     * Metodo responsavel por calcular o valor da mensalidade
+     * @return float
      */
-
-
+    private function valorMensalidade(){
+        return $this->contrato->getValorAluguel() + $this->contrato->getValorCondominio() + $this->contrato->getValorIptu();
+    }
     
-    /**
-     * Metodo responsavel por alterar o status de uma mensalidade
-     */
-    
-
-
-
-
-    
-
-
-
-
-
 }

@@ -92,7 +92,24 @@ class ConContrato{
         return self::$js;
     }
 
+    /**
+     * Metodo responsavel por gerar o head da tabela
+     */
+    public function getHeadTabela(){
 
+        return '
+            <tr>
+                <th>ID</th> 	
+                <th>CLIENTE</th> 	
+                <th>IMOVEL</th> 	
+                <th>DATA INICIO</th> 
+                <th>DATA FIM</th> 
+                <th>MENSALIDADE</th> 
+                <th>REPASSE</th> 
+                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th> 
+            </tr>
+            ';
+    }
 
 
 

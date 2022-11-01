@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="asset/vendors/bootstrap_v4.1.0/css/bootstrap.css">
 
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="asset/vendors/font-awesome/css/font-awesome.css">
+    
     <!-- Jquery -->
     <script src="asset/vendors/jquery/jquery-2.1.4.min.js"></script>
 
