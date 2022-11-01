@@ -116,7 +116,7 @@ function getTable()
             }
             else
             {                         
-                $('#tbody').html('<tr><td colspan="5">Não encontrado registros para tabela.</td></tr>');
+                $('#tbody').html('<tr><td colspan="4">Não encontrado registros para tabela.</td></tr>');
             }
         },
         error:(e)=>

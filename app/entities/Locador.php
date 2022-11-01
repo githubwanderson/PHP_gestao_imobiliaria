@@ -9,7 +9,7 @@ class Locador extends Cliente{
      * valor 1 = LOCADOR
      * @var int
      */
-    private $TIPO = 1; 
+    private $TIPO_CLIENTE = 1; 
 
     /**
      * Dia para repasse do aluguel
@@ -24,13 +24,11 @@ class Locador extends Cliente{
      * @param integer $BD_CLIENTE_TIPO
      * 
      */
-    public function __construct( $arr )
+    public function __construct()
     {
-        parent::__construct($arr );
-
-        $this->setDiaRepasse( $arr['DIA_REPASSE'] );
+        $this->setTipo( $this->getTipoCliente() );
     }
-
+ 
     /**
      * *********** GETTERS AND SETTERS ***********
      */
@@ -48,7 +46,7 @@ class Locador extends Cliente{
         }
         else
         {
-            return false;
+            $this->DIA_REPASSE = 1; 
         }
         
     }
@@ -57,20 +55,32 @@ class Locador extends Cliente{
         return $this->DIA_REPASSE;
     }
 
+    public function getTipoCliente(){
+        return $this->TIPO_CLIENTE;
+    }
+
     /**
-     * metodo responsavel por cadastrar o obj no banco de dados
+     * Metodo responsavel por povoar o objeto com array
      */
-    public function Cadastrar(){
+    public function setDados( $arr = [] ){
+        $this->setDadosCliente( $arr );  
+        $this->setDiaRepasse( $arr['DIA_REPASSE'] );
+    }
 
-        // Data do cadastro
-        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
+    /**
+     * metodo responsavel por povoar obj com dados do banco
+     * @param integer $id
+     * @return boolean
+     */
+    public function getLocador( $id ){
 
-        //inserir no banco
-        $db = new Database('cliente');
-        $this->setId( $db->insert(get_object_vars($this) ) );
-
-        //retornar sucesso
-        return $this->getId();
+        require_once __DIR__.'/../database/Database.php';
+        
+        $bd = new Database('cliente');
+        $result =  $bd->select( 'ID = '.$id )
+                        ->fetchAll( PDO::FETCH_ASSOC );
+        $this->setDados(  $result[0]  );
+        return true;
     }
 
 }

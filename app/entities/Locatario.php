@@ -9,34 +9,26 @@ class Locatario extends Cliente{
      * valor 2 = LOCATARIO
      * @var int
      */
-    private $TIPO = 2; 
+    private $TIPO_CLIENTE = 2; 
 
     /**
      * *********** CONSTRUCT ***********
-     * 
-     * @param array $arr [ NOME , EMAIL , TELEFONE ]
-     * @param integer $BD_CLIENTE_TIPO
-     * 
      */
-    public function __construct( $arr = [] )
-    {
-        parent::__construct($arr );
+    public function __construct(){
+        $this->setTipo( $this->getTipoCliente() );
     }
-    
+
     /**
-     * metodo responsavel por cadastrar o obj no banco de dados
+     * Metodo get para Tipo
      */
-    public function Cadastrar(){
-
-        // Data do cadastro
-        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
-
-        //inserir no banco
-        $db = new Database('cliente');
-        $this->setId( $db->insert(get_object_vars($this) ) );
-
-        //retornar sucesso
-        return $this->getId();
+    public function getTipoCliente(){
+        return $this->TIPO_CLIENTE;
     }
 
+    /**
+     * Metodo responsavel por povoar o objeto com array
+     */
+    public function setDados( $arr = [] ){
+        $this->setDadosCliente( $arr );        
+    }
 }

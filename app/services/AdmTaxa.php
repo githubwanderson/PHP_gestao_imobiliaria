@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__.'/../database/Database.php';
-
 class AdmTaxa{
 
     /**
@@ -42,6 +40,8 @@ class AdmTaxa{
      * @return int utimo ID com status = ATIVO cadastrado
      */
     private function getTaxaAdministracao(){
+
+        require_once __DIR__.'/../database/Database.php';
 
         $db     = new Database('adm_taxa');
         $result = $db->select( 'ATIVO = 1' , null , 'ID DESC' , '1' , 'VALOR' )->fetch(PDO::FETCH_ASSOC);

@@ -47,7 +47,7 @@ function getTable()
 {
     dados = [];
     dados[0]   = "cliente"
-    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 2"; // TIPO = 2 LOCADOR
+    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 1 LOCADOR
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
@@ -68,7 +68,7 @@ function getTable()
             }
             else
             {                         
-                $('#tbody').html('<tr><td colspan="5">Não encontrado registros para tabela.</td></tr>');
+                $('#tbody').html('<tr><td colspan="6">Não encontrado registros para tabela.</td></tr>');
             }
         },
         error:(e)=>

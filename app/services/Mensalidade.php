@@ -23,6 +23,7 @@ class Mensalidade extends Parcela{
         parent::__construct($contrato );
         $this->setTipo( $this->BD_PARCELA_TIPO );
         $this->setValor( $this->valorMensalidade() );
+        $this->dataPrimeiraParcela();
     }
 
     /**
@@ -31,6 +32,13 @@ class Mensalidade extends Parcela{
      */
     private function valorMensalidade(){
         return $this->contrato->getValorAluguel() + $this->contrato->getValorCondominio() + $this->contrato->getValorIptu();
+    }
+
+    /**
+     * Metodo responsavel por gerar a data da primeira parcela
+     */
+    public function dataPrimeiraParcela(){
+        $this->setDataVencimento( date('Y-m-01' , strtotime($this->contrato->getDataInicio().' +1 month')) );
     }
     
 }

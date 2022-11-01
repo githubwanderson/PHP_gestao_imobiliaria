@@ -1,32 +1,36 @@
 <?php
 
-require __DIR__.'/../database/Database.php';
-
 abstract class Cliente{
 
     /**
      * identificador unico
      * @var integer
      */
-    protected $id;
+    protected $ID;
+
+    /**
+     * Tipo de cliente conforme especificado no banco de dados na tabela 'cliente_tipo'
+     * @var int
+     */
+    private $TIPO; 
 
     /**
      * Nome
      * @var string
      */
-    protected $nome;
+    protected $NOME;
     
     /**
      * Email
      * @var string
      */
-    protected $email;
+    protected $EMAIL;
     
     /**
      * Telefone
      * @var string
      */
-    protected $telefone;
+    protected $TELEFONE;
 
     /**
      * Datatime do cadastro
@@ -36,51 +40,51 @@ abstract class Cliente{
 
     /**
      * *********** CONSTRUCT ***********
-     * 
-     * @param array $arr [ NOME , EMAIL , TELEFONE ]
-     * 
      */
-    public function __construct( $arr = [] )
-    {
-        $this->setNome( $arr['NOME'] );
-        $this->setEmail( $arr['EMAIL'] );
-        $this->setTelefone( $arr['TELEFONE']);
-    }
+    public function __construct(){}
 
     /**
      * *********** GETTERS AND SETTERS ***********
      */
 
-    public function setId( $id ){
-        $this->id = $id;
+    public function setId( $ID ){
+        $this->ID = $ID;
     }
 
     public function getId(){
-        return $this->id;
+        return $this->ID;
     }
 
-    public function setNome( $nome ){
-        $this->nome = $nome;
+    public function setTipo( $TIPO ){
+        $this->TIPO = $TIPO;
+    }
+
+    public function getTipo(){
+        return $this->TIPO;
+    }
+
+    public function setNome( $NOME ){
+        $this->NOME = $NOME;
     }
 
     public function getNome(){
-        return $this->nome;
+        return $this->NOME;
     }
 
-    public function setEmail( $email ){
-        $this->email = $email;
+    public function setEmail( $EMAIL ){
+        $this->EMAIL = $EMAIL;
     }
 
     public function getEmail(){
-        return $this->email;
+        return $this->EMAIL;
     }
 
-    public function setTelefone( $telefone ){
-        $this->telefone = $telefone;
+    public function setTelefone( $TELEFONE ){
+        $this->TELEFONE = $TELEFONE;
     }
 
     public function getTelefone(){
-        return $this->telefone;
+        return $this->TELEFONE;
     }
 
     public function setCreatedDatatime( $CREATED_DATETIME ){
@@ -92,8 +96,30 @@ abstract class Cliente{
     }
 
     /**
+     * Metodo responsavel por povoar o objeto com array
+     */
+    public function setDadosCliente( $arr = [] ){
+        $this->setNome( $arr['NOME'] );
+        $this->setEmail( $arr['EMAIL'] );
+        $this->setTelefone( $arr['TELEFONE']);
+    }
+
+    /**
      * metodo responsavel por cadastrar o obj no banco de dados
      */
-    public abstract function Cadastrar();
+    public function Cadastrar(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        // Data do cadastro
+        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
+
+        //inserir no banco
+        $db = new Database('cliente');
+        $this->setId( $db->insert(get_object_vars($this) ) );
+
+        //retornar sucesso
+        return $this->getId();
+    }
 
 }

@@ -11,7 +11,8 @@ require_once __DIR__.'/../app/entities/'.$class.'.php';
  * Instancia um novo obj e cadastra dados no banco
  * @return integer Id cadastrado
  */
-$obj    = new $class($_POST);
+$obj    = new $class();
+$obj->setDados($_POST);
 $id     = $obj->cadastrar();
 
-echo json_encode($obj);
+echo json_encode($id);

@@ -47,7 +47,7 @@ function getTable()
 {
     dados = [];
     dados[0]   = "cliente"
-    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 1 LOCATARIO
+    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 2"; // TIPO = 2 LOCATARIO
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;

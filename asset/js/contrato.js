@@ -1,4 +1,3 @@
-
 /**
  * buscar lista de Locador
  */
@@ -81,8 +80,9 @@ function getImovel()
 function getTaxaAdm()
 {
     dados = [];
-    dados[0]   = "AdmTaxa"
-    dados[1]   = "getValorTaxaAdm"; 
+    dados[0]   = "AdmTaxa";
+    dados[1]   = "services"; 
+    dados[2]   = "getValor"; 
 
     // Verificar se ha registro no banco
     $.ajax(
@@ -235,7 +235,7 @@ function getTable()
             }
             else
             {                         
-                $('#tbody').html('<tr><td colspan="5">Não encontrado registros para tabela.</td></tr>');
+                $('#tbody').html('<tr><td colspan="8">Não encontrado registros para tabela.</td></tr>');
             }
         },
         error:(e)=>

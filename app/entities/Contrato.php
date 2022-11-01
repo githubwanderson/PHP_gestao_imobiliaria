@@ -1,8 +1,6 @@
 <?php
 
-use LDAP\Result;
-
-require __DIR__.'/AdmTaxa.php';
+require __DIR__.'/../services/AdmTaxa.php';
 
 class Contrato{
 
@@ -74,22 +72,10 @@ class Contrato{
     
 
     /**
-     * *********** CONSTRUCT ***********
-     * 
-     * @param array $arr [ ID_CLIENTE , ID_IMOVEL , DURACAO_MES , DT_INICIO , VALOR_CONDOMINIO , VALOR_IPTU , DT_INICIO ]
-     * 
+     * *********** CONSTRUCT *********** 
      */
-    public function __construct( $arr = [] )
-    {
-        $this->setIdLocatario( $arr['ID_CLIENTE'] );
-        $this->setIdImovel( $arr['ID_IMOVEL'] );
-        $this->setDataInicio( $arr['DT_INICIO'] );
-        $this->setDuracao( $arr['DURACAO_MES'] );
-        $this->setValorCondominio( $arr['VALOR_CONDOMINIO'] );
-        $this->setValorIptu( $arr['VALOR_IPTU'] );
-        $this->setValorAluguel( $arr['VALOR_ALUGUEL'] );
-        $this->setTaxaAdm();
-    }
+    public function __construct(){}
+
 
     /**
      * *********** GETTERS AND SETTERS ***********
@@ -174,6 +160,23 @@ class Contrato{
 
     public function getCreatedDatatime(){
         return $this->CREATED_DATETIME;
+    }
+
+    /**
+     * 
+     * Metodo responsavel por povoar o objeto com array
+     * @param array $arr [ ID_CLIENTE , ID_IMOVEL , DURACAO_MES , DT_INICIO , VALOR_CONDOMINIO , VALOR_IPTU , DT_INICIO ]
+     * 
+     */
+    public function setDados( $arr = [] ){
+        $this->setIdLocatario( $arr['ID_CLIENTE'] );
+        $this->setIdImovel( $arr['ID_IMOVEL'] );
+        $this->setDataInicio( $arr['DT_INICIO'] );
+        $this->setDuracao( $arr['DURACAO_MES'] );
+        $this->setValorCondominio( $arr['VALOR_CONDOMINIO'] );
+        $this->setValorIptu( $arr['VALOR_IPTU'] );
+        $this->setValorAluguel( $arr['VALOR_ALUGUEL'] );
+        $this->setTaxaAdm();
     }
 
     /** 

@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/../database/Database.php';
+require_once __DIR__.'/../database/Database.php';
 
 class imovel{
 
@@ -29,16 +29,10 @@ class imovel{
     protected $CREATED_DATETIME;
 
     /**
-     * *********** CONSTRUCT ***********
-     * 
-     * @param array $arr [ ID_CLIENTE , ENDERECO ]
+     * *********** CONSTRUCT *********** 
      * 
      */
-    public function __construct( $arr )
-    {
-        $this->setIdLocador( $arr['ID_CLIENTE'] );
-        $this->setEndereco( $arr['ENDERECO'] );
-    }
+    public function __construct(){}
 
     /**
      * *********** GETTERS AND SETTERS ***********
@@ -77,9 +71,18 @@ class imovel{
     }
 
     /**
+     * Metodo responsavel por povoar o objeto com array
+     */
+    public function setDados( $arr = [] ){
+        $this->setIdLocador( $arr['ID_CLIENTE'] );
+        $this->setEndereco( $arr['ENDERECO'] );
+    }
+
+
+    /**
      * metodo responsavel por cadastrar o obj no banco de dados
      */
-    public function Cadastrar(){
+    public function cadastrar(){
 
         // Data do cadastro
         $this->setCreatedDatatime( date('Y-m-d H:i:s') );
@@ -90,6 +93,20 @@ class imovel{
 
         //retornar sucesso
         return $this->getId();
+    }
+    
+    /**
+     * metodo responsavel por povoar obj com dados do banco
+     * @param integer $id
+     * @return boolean
+     */
+    public function getImovel( $id ){
+
+        $bd = new Database('imovel');
+        $result =  $bd->select( 'ID = '.$id )
+                        ->fetchAll( PDO::FETCH_ASSOC );
+        $this->setDados(  $result[0]  );
+        return true;
     }
 
 }
