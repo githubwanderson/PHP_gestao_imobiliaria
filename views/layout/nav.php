@@ -17,7 +17,7 @@
         <a class="nav-link" href="index.php?p=ConImovel">Imovel</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Contrato</a>
+        <a class="nav-link" href="index.php?p=ConContrato">Contrato</a>
       </li>
     </ul>
   </div>

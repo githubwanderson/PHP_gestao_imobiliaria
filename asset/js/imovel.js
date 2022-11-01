@@ -1,13 +1,16 @@
 
 /**
- * buscar lista de Locador
+ * buscar lista de Locador e preencher select
  */
 function getLocador()
 {
     dados = [];
     dados[0]   = "cliente"
-    dados[1]   = "cliente_tipo b ON b.ID = cliente.TIPO";
-    dados[2]   = "cliente.TIPO = 1";
+    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 2 LOCADOR
+    dados[2]   = null;
+    dados[3]   = null;
+    dados[4]   = null;
+    dados[5]   = "cliente.ID , cliente.NOME";
 
     // Verificar se ha registro no banco
     $.ajax(
@@ -20,11 +23,11 @@ function getLocador()
         {
             if(dados.length > 0)
             {
-                console.log(dados);
+                preenchaSelect('ID_CLIENTE',dados)
             }
             else
             {                         
-                console.log('sem dados');
+                console.log('Sem dados de cliente "LOCADOR"');
             }
         },
         error:(e)=>
@@ -50,7 +53,7 @@ $('#btnSubmit').click(function()
         
         $.ajax(
         {
-            url:'ajax/tabela.php',
+            url:'ajax/salvar.php',
             type:'post',
             dataType:'json',
             data: dados,
@@ -70,5 +73,19 @@ $('#btnSubmit').click(function()
     }
 }); 
 
-getLocador()
+/**
+ * Preencher select do modal
+ */
+function preenchaSelect(idSelect,array)
+{
+    $.each(array, function( n , v )
+    {
+        document.getElementById(idSelect).innerHTML += '<option value='+v.ID+'>'+v.NOME+'</option>';
+    });
+}
+
+/**
+ * metodos necessarios no carregamento da pagina
+ */
+getLocador();
 

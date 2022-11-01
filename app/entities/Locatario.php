@@ -14,13 +14,13 @@ class Locatario extends Cliente{
     /**
      * *********** CONSTRUCT ***********
      * 
-     * @param array $post [ NOME , EMAIL , TELEFONE ]
+     * @param array $arr [ NOME , EMAIL , TELEFONE ]
      * @param integer $BD_CLIENTE_TIPO
      * 
      */
-    public function __construct( $post = [] )
+    public function __construct( $arr = [] )
     {
-        parent::__construct($post );
+        parent::__construct($arr );
     }
     
     /**

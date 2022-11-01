@@ -3,19 +3,24 @@
 // var_dump($controller); exit; 
 // print_r($page); echo "</pre>"; exit; 
 
-// include_once './app/entities/Locatario.php';
+// include_once './controller/ConContrato.php';
+// include_once './app/entities/Contrato.php';
 
 // $arr = [
-//     'NOME' => 'JOAO',
-//     'EMAIL' => 'JOAO@H',
-//     'TELEFONE' => '1242'
+//     'ID_CLIENTE' => '2',
+//     'ID_IMOVEL' => '1',
+//     'DURACAO_MES' => '12',
+//     'DT_INICIO' => '2022-11-01',
+//     'VALOR_ALUGUEL' => '1900',
+//     'VALOR_CONDOMINIO' => '150',
+//     'VALOR_IPTU' => '100'
 // ];
 
-// $ob = new Locatario( $arr );
+// $ob = new Contrato( $arr );
 
-// $ob->Cadastrar();
+// ;
 
-// print_r($ob); echo "</pre>"; exit; 
+// print_r($ob->Cadastrar() ); echo "</pre>"; exit; 
 
 /**
  * Nome da view default / home page

@@ -32,12 +32,12 @@ class ConLocatario{
 
                             <div class="form-group">
                                 <label>E-mail</label>
-                                <input type="text" class="form-control" name="EMAIL">
+                                <input type="email" class="form-control" name="EMAIL">
                             </div>
 
                             <div class="form-group">
                                 <label>Telefone</label>
-                                <input type="text" class="form-control" name="TELEFONE">
+                                <input type="number" class="form-control" name="TELEFONE">
                             </div>';
 
 

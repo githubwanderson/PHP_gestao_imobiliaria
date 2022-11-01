@@ -37,14 +37,14 @@ abstract class Cliente{
     /**
      * *********** CONSTRUCT ***********
      * 
-     * @param array $post [ NOME , EMAIL , TELEFONE ]
+     * @param array $arr [ NOME , EMAIL , TELEFONE ]
      * 
      */
-    public function __construct( $post = [] )
+    public function __construct( $arr = [] )
     {
-        $this->setNome( $post['NOME'] );
-        $this->setEmail( $post['EMAIL'] );
-        $this->setTelefone( $post['TELEFONE']);
+        $this->setNome( $arr['NOME'] );
+        $this->setEmail( $arr['EMAIL'] );
+        $this->setTelefone( $arr['TELEFONE']);
     }
 
     /**
