@@ -253,9 +253,9 @@ function preenchaTabela(dados)
     body = false;
     $.each(dados, function(i,v)
     {           
-        link_editar         = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_repasse        = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_mensalidade    = "<a id="+v.ID+" class='btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_editar         = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_repasse        = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' onclick='mensalidade("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
 
         if(line=0)
         {
@@ -271,10 +271,13 @@ function preenchaTabela(dados)
     });   
         
     $('#tbody').html(body);
-
 }
 
 getLocatario()
 getImovel()
 getTaxaAdm()
 getTable()
+
+function mensalidade( p ){
+    console.log(p);
+}

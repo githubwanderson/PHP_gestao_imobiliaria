@@ -11,7 +11,7 @@
       <div class="table-responsive text-center">
         <table class="table table-striped table-sm table-hover mt-3">
 
-            <thead>
+            <thead class='mensalidade'>
                 <?=$dataPage->getHeadTabela()?>
             </thead>
             <tbody id="tbody">

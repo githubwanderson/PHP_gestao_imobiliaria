@@ -1,39 +1,5 @@
 <?php
 
-// var_dump($controller); exit; 
-// print_r($page); echo "</pre>"; exit; 
-
-// include_once './app/services/Mensalidade.php';
-// include_once './app/entities/Contrato.php';
-
-// $arr = [
-//     'ID_CLIENTE' => '22',
-//     'ID_IMOVEL' => '1',
-//     'DURACAO_MES' => '12',
-//     'DT_INICIO' => '2022-02-21',
-//     'VALOR_ALUGUEL' => '2000',
-//     'VALOR_CONDOMINIO' => '800',
-//     'VALOR_IPTU' => '200'
-// ];
-
-// $contrato = new Contrato();
-
-// $contrato->setDados( $arr );
-
-// $ob->Cadastrar();
-
-// // ;
-
-// print_r($ob ); echo "</pre>"; exit; 
-
-// include_once './app/services/Repasse.php';
-
-// $r = new Repasse( $contrato );
-
-
-
-// print_r($r->dataPrimeiraParcela() ); echo "</pre>"; exit; 
-
 /**
  * Nome da view default / home page
  */
