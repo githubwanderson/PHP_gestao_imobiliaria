@@ -7,7 +7,7 @@ class ConContrato{
     /**
      * nome do arquivo que sera incluido
      */
-    public static $include = 'main';
+    public static $include = 'mainContrato';
 
     /**
      * Nome do titulo Apresentação
@@ -66,7 +66,7 @@ class ConContrato{
 
                             <div class='form-group'>
                                 <label>Valor taxa de administração ( % )</label>
-                                <input id='VALOR_TX_ADM' type='number' class='form-control' disabled>";
+                                <input id='VALOR_TX_ADM' type='number' class='form-control' disabled></div>";
 
     /**
      * *********** GETTERS AND SETTERS ***********

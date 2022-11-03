@@ -23,7 +23,7 @@ class Repasse extends Parcela{
         parent::__construct($contrato );
         $this->setTipo( $this->BD_PARCELA_TIPO );
         $this->setValor( $this->valorRepasse() );
-        $this->dataPrimeiraParcela();
+        $this->setDataVencimento( $this->dataPrimeiraParcela() );
     }
 
     /**
@@ -36,9 +36,7 @@ class Repasse extends Parcela{
         require_once __DIR__.'/AdmTaxa.php';
 
         $taxa = ( new AdmTaxa() )->getValor();
-
         $taxa *= $this->contrato->getValorAluguel() / 100;
-
         return $this->contrato->getValorAluguel() + $this->contrato->getValorIptu() - $taxa;
 
     }
@@ -61,7 +59,7 @@ class Repasse extends Parcela{
         $locador->getLocador( $imovel->getIdLocador() );
         $diaRepasse = $locador->getDiaRepasse();
 
-        $this->setDataVencimento( date('Y-m-'.$diaRepasse , strtotime($this->contrato->getDataInicio().' +1 month')) );
+        return date('Y-m-'.$diaRepasse , strtotime($this->contrato->getDataInicio().' +1 month'));
     }
 
 }

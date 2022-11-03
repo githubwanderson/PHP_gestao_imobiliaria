@@ -209,6 +209,7 @@ function validaForm(){
 
 /**
  * buscar lista de Locatario e preencher tabela
+ * @param array 
  */
 function getTable()
 {
@@ -253,9 +254,9 @@ function preenchaTabela(dados)
     body = false;
     $.each(dados, function(i,v)
     {           
-        link_editar         = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_repasse        = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' onclick='mensalidade("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_editar         = "<a id="+v.ID+" class='btn btn_edit' onclick='editar("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_repasse        = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='repasse("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='mensalidade("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
 
         if(line=0)
         {
@@ -278,6 +279,67 @@ getImovel()
 getTaxaAdm()
 getTable()
 
-function mensalidade( p ){
-    console.log(p);
+function mensalidade( id ){
+
+    dados = [];
+    dados[0]   = "contrato_parcela"
+    dados[1]   = "contrato_parcela.ID_CONTRATO =" + id + " AND contrato_parcela.TIPO = 1"; 
+    dados[2]   = null;
+    dados[3]   = null;
+    dados[4]   = null;
+    dados[5]   = "contrato_parcela.ID , contrato_parcela.PARCELA , contrato_parcela.VALOR , DATE_FORMAT( contrato_parcela.DT_VENCIMENTO, '%d/%m/%Y' ) DT_VENCIMENTO , contrato_parcela.REALIZADO";
+
+    // Verificar se ha registro no banco
+    $.ajax(
+    {
+        url:'ajax/tabela.php',
+        type:'post',
+        dataType:'json',
+        data:{dados},
+        success:(dados)=>
+        {
+            if(dados.length > 0)
+            {
+                preenchaTabelaParcela(dados)
+            }
+            else
+            {                         
+                $('#tbodyParcela').html('<tr><td colspan="8">Não encontrado registros para tabela.</td></tr>');
+            }
+        },
+        error:(e)=>
+        {
+            console.log(e.status, e.statusText);
+        }   
+    });
+
+
+}
+
+function repasse( p ){
+    console.log('repasse ' + p);
+}
+
+function preenchaTabelaParcela(dados)
+{
+    $('#tbodyParcela').html('');
+
+    line = 0
+    body = false;
+    $.each(dados, function(i,v)
+    {           
+        if(line=0)
+        {
+            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+v.REALIZADO+'</td>';    
+            line + '</tr>';  
+        }
+        else
+        {
+            line += '<tr><td>'+v.ID+'</td>'+'<td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+v.REALIZADO+'</td>';    
+            line + '</tr>';  
+        }  
+        body = body == false ? line : body + line;
+    });   
+        
+    $('#tbodyParcela').html(body);
 }

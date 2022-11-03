@@ -143,6 +143,8 @@ class Parcela{
 
         $db = new Database('contrato_parcela');
 
+        $dt_vencimento = $this->getDataVencimento();
+
         for ($i=0; $i < $this->contrato->getDuracao(); $i++) {             
 
             $db->insert(
@@ -151,7 +153,7 @@ class Parcela{
                 'TIPO'          => $this->getTipo(),
                 'PARCELA'       => $i+1,
                 'VALOR'         => $i == 0 ? $this->valorPrimeiraparcela() : $this->getValor(),
-                'DT_VENCIMENTO' => $this->getDataVencimento()
+                'DT_VENCIMENTO' => $i == 0 ? $dt_vencimento : date('Y-m-d' , strtotime($dt_vencimento.' + '. $i .' months' ))
             ]);
 
         }

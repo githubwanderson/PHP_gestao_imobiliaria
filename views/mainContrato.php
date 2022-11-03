@@ -5,13 +5,14 @@
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal">
         Novo
       </button>
+
     </section>
 
     <section>
       <div class="table-responsive text-center">
         <table class="table table-striped table-sm table-hover mt-3">
 
-            <thead class='mensalidade'>
+            <thead>
                 <?=$dataPage->getHeadTabela()?>
             </thead>
             <tbody id="tbody">
@@ -39,7 +40,7 @@
       </div>
       <div class="modal-body">
         
-        <form id="form">
+        <form method="post" id="form">
 
             <?=$dataPage->getForm()?>
 
@@ -50,6 +51,40 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-success" id="btnSubmit">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalParcela" tabindex="-1" role="dialog" aria-labelledby="modalParcela" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalParcelaTilulo">Modal 2</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="table-responsive text-center">
+          <table class="table table-striped table-sm table-hover mt-3">
+
+              <thead id="theadParcela">                  
+              </thead>
+              <tbody id="tbodyParcela">
+              </tbody>
+              <tfoot>
+              </tfoot>
+
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
