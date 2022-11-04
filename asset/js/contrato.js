@@ -1,5 +1,5 @@
 /**
- * buscar lista de Locador
+ * Responsavel por buscar lista de Locador
  */
 function getLocatario()
 {
@@ -37,7 +37,7 @@ function getLocatario()
 }
 
 /**
- * buscar lista de imoveis join proprietarios
+ * Responsavel por buscar lista de imoveis join proprietarios
  */
 function getImovel()
 {
@@ -49,7 +49,6 @@ function getImovel()
     dados[4]   = null;
     dados[5]   = "imovel.ID , CONCAT( b.NOME , ' | ' , imovel.ENDERECO ) NOME";
 
-    // Verificar se ha registro no banco
     $.ajax(
     {
         url:'ajax/tabela.php',
@@ -75,7 +74,7 @@ function getImovel()
 }
 
 /**
- * buscar lista de imoveis join proprietarios
+ * Responsavel por buscar lista de imoveis join proprietarios
  */
 function getTaxaAdm()
 {
@@ -84,7 +83,6 @@ function getTaxaAdm()
     dados[1]   = "services"; 
     dados[2]   = "getValor"; 
 
-    // Verificar se ha registro no banco
     $.ajax(
     {
         url:'ajax/class.php',
@@ -111,7 +109,7 @@ function getTaxaAdm()
 
 
 /**
- * Salvar formulario
+ * Responsavel por Salvar o formulario
  */
 $('#btnSubmit').click(function()
 {
@@ -151,7 +149,7 @@ $('#btnSubmit').click(function()
 }); 
 
 /**
- * Preencher select do modal
+ * Responsavel por preencher select do modal
  */
 function preenchaSelect(idSelect,array)
 {
@@ -162,7 +160,7 @@ function preenchaSelect(idSelect,array)
 }
 
 /**
- * Validar form
+ * Responsavel por validar o form
  * @return bollean
  */
 function validaForm(){
@@ -208,7 +206,7 @@ function validaForm(){
 }
 
 /**
- * buscar lista de Locatario e preencher tabela
+ * Responsavel por buscar lista de Locatario e preencher tabela
  * @param array 
  */
 function getTable()
@@ -279,7 +277,22 @@ getImovel()
 getTaxaAdm()
 getTable()
 
+/**
+ * Responsavel por carregar a modal com dados de mensalidade
+ * @param {integer} id 
+ */
 function mensalidade( id ){
+
+    // preencher titulo modal
+    $('#modalParcelaTilulo').html('Mensalidades');
+
+    // preencher titulo table modal
+    theadParcela = '<tr><th>PARCELA</th><th>VALOR (R$)</th><th>VENCIMENTO</th><th>REALIZADO</th></tr>'
+    $('#theadParcela').html(theadParcela);
+
+    // pegar dados
+
+    // preencher tabela modal
 
     dados = [];
     dados[0]   = "contrato_parcela"
@@ -312,34 +325,42 @@ function mensalidade( id ){
             console.log(e.status, e.statusText);
         }   
     });
-
-
 }
 
+/**
+ * Responsavel por carregar a modal com dados de repasse
+ * @param {integer} id 
+ */
 function repasse( p ){
     console.log('repasse ' + p);
 }
 
-function preenchaTabelaParcela(dados)
+function preenchaTabelaParcela(dados , titulo )
 {
     $('#tbodyParcela').html('');
 
-    line = 0
+    console.log(dados)
+
     body = false;
     $.each(dados, function(i,v)
-    {           
-        if(line=0)
-        {
-            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+v.REALIZADO+'</td>';    
-            line + '</tr>';  
-        }
-        else
-        {
-            line += '<tr><td>'+v.ID+'</td>'+'<td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+v.REALIZADO+'</td>';    
-            line + '</tr>';  
-        }  
+    {         
+        btnStatus = 
+            '<button type="button" class="btn btn-dark" name="btn_x" onclick="parcelaEditar('+v.ID+')">'
+            +'<span class="text-white" aria-hidden="true"><i class="fa fa-toggle-off" aria-hidden="true"></i></span>'
+            +'</button>';
+
+        line = '<tr><td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+btnStatus+'</td></tr>';    
+   
         body = body == false ? line : body + line;
     });   
         
     $('#tbodyParcela').html(body);
+}
+
+/**
+ * Responsavel por alterar o status de uma parcela
+ * @param {integer} id 
+ */
+function parcelaEditar( id ){
+    console.log( id )
 }
