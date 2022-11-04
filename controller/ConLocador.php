@@ -82,7 +82,7 @@ class ConLocador{
                 <th>EMAIL</th> 
                 <th>TELEFONE</th> 
                 <th>DIA REPASSE</th> 
-                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th> 
+                <th>EDITAR</th> 
             </tr>
             ';
     }

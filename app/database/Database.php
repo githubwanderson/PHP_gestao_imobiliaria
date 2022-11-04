@@ -63,6 +63,28 @@ class database extends Conexao{
         //executa a query
         return $this->execute($query);
     }
-  
+
+
+    /**
+     * @param string $where
+     * @param array $values [ field => value]
+     * @return boolean
+     */
+    public function update( $where , $values ){
+
+        //dados da query
+        $fields = array_keys($values);
+        $fields = implode('=?,',$fields);
+
+        //monta a query
+        $query = 'UPDATE '.$this->getTable().' SET '.$fields.' =? WHERE '.$where;
+
+        //executa a query
+        $this->execute( $query , array_values( $values ));
+
+        //se nao ocorrer nem erro na chamada do metodo execute() entao retorne true
+        return true;
+
+    }
 
 }

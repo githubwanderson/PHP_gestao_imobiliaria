@@ -106,7 +106,7 @@ class ConContrato{
                 <th>DATA FIM</th> 
                 <th>MENSALIDADE</th> 
                 <th>REPASSE</th> 
-                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th> 
+                <th>EDITAR</th> 
             </tr>
             ';
     }

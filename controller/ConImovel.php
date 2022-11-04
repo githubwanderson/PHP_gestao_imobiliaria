@@ -69,7 +69,7 @@ class Conimovel{
                 <th>ID</th> 
                 <th>LOCADOR</th> 
                 <th>ENDEREÇO</th> 
-                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th>
+                <th>EDITAR</th>
             </tr>
             ';
     }

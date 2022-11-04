@@ -252,9 +252,9 @@ function preenchaTabela(dados)
     body = false;
     $.each(dados, function(i,v)
     {           
-        link_editar         = "<a id="+v.ID+" class='btn btn_edit' onclick='editar("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_repasse        = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='repasse("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='mensalidade("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_editar         = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_repasse        = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='repasse("+v.ID+")'><i class='fa fa-table' aria-hidden='true'></i></a>";
+        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='mensalidade("+v.ID+")'><i class='fa fa-table' aria-hidden='true'></i></a>";
 
         if(line=0)
         {
@@ -272,31 +272,56 @@ function preenchaTabela(dados)
     $('#tbody').html(body);
 }
 
-getLocatario()
-getImovel()
-getTaxaAdm()
-getTable()
-
 /**
- * Responsavel por carregar a modal com dados de mensalidade
+ * Responsavel por direcionar o update do status mensalidade
  * @param {integer} id 
  */
 function mensalidade( id ){
 
+    // Regra banco de dados: PARCELA_TIPO : 1=MENSALIDADE , 2=REPASSE
+    tipo = 1;
+
     // preencher titulo modal
-    $('#modalParcelaTilulo').html('Mensalidades');
+    $('#modalParcelaTilulo').html('PARCELA - Mensalidade');
 
     // preencher titulo table modal
     theadParcela = '<tr><th>PARCELA</th><th>VALOR (R$)</th><th>VENCIMENTO</th><th>REALIZADO</th></tr>'
     $('#theadParcela').html(theadParcela);
 
-    // pegar dados
+    parcelaSearch( id , tipo );
+    
+}
 
+/**
+ * Responsavel por direcionar o update do status repasse
+ * @param {integer} id 
+ */
+function repasse( id ){
+
+    // Regra banco de dados: PARCELA_TIPO : 1=MENSALIDADE , 2=REPASSE
+    tipo = 2;
+
+    // preencher titulo modal
+    $('#modalParcelaTilulo').html('PARCELA - Repasse');
+
+    // preencher titulo table modal
+    theadParcela = '<tr><th>PARCELA</th><th>VALOR (R$)</th><th>VENCIMENTO</th><th>REALIZADO</th></tr>'
+    $('#theadParcela').html(theadParcela);
+
+    parcelaSearch( id , tipo );    
+}
+
+/**
+ * Responsavel por carregar a modal com dados da parcela
+ */
+function parcelaSearch( id , tipo ){
+    
+    // pegar dados
     // preencher tabela modal
 
     dados = [];
     dados[0]   = "contrato_parcela"
-    dados[1]   = "contrato_parcela.ID_CONTRATO =" + id + " AND contrato_parcela.TIPO = 1"; 
+    dados[1]   = "contrato_parcela.ID_CONTRATO =" + id + " AND contrato_parcela.TIPO = " + tipo; 
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
@@ -327,26 +352,17 @@ function mensalidade( id ){
     });
 }
 
-/**
- * Responsavel por carregar a modal com dados de repasse
- * @param {integer} id 
- */
-function repasse( p ){
-    console.log('repasse ' + p);
-}
-
-function preenchaTabelaParcela(dados , titulo )
+function preenchaTabelaParcela( dados )
 {
     $('#tbodyParcela').html('');
-
-    console.log(dados)
 
     body = false;
     $.each(dados, function(i,v)
     {         
+        realizadoStatus = v.REALIZADO == 1 ? 'off' : 'on'; 
         btnStatus = 
-            '<button type="button" class="btn btn-dark" name="btn_x" onclick="parcelaEditar('+v.ID+')">'
-            +'<span class="text-white" aria-hidden="true"><i class="fa fa-toggle-off" aria-hidden="true"></i></span>'
+            '<button type="button" id="par_'+v.ID+'" class="btn btn-dark" onclick="parcelaEditar('+v.ID+')">'
+            +'<span class="text-white" aria-hidden="true"><i class="fa fa-toggle-'+realizadoStatus+'" aria-hidden="true"></i></span>'
             +'</button>';
 
         line = '<tr><td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+btnStatus+'</td></tr>';    
@@ -360,7 +376,60 @@ function preenchaTabelaParcela(dados , titulo )
 /**
  * Responsavel por alterar o status de uma parcela
  * @param {integer} id 
+ * Regra banco de dados: REALIZADO: 1=sim , 2=nao
+ * Atribuido as parcelas como 1=on e 2=off
  */
 function parcelaEditar( id ){
-    console.log( id )
+
+    btnClass  = $('#par_'+id).children().children().prop('class');
+
+    if(btnClass == 'fa fa-toggle-off')
+    {
+        updateStatusParcela( id , 2 )
+        /**
+         * Se class = off entao alterar status para on e salvar 1 no banco de dados
+         */
+        $('#par_'+id).children().children().prop('class','fa fa-toggle-on');
+    }
+    else
+    {
+        updateStatusParcela( id , 1 )
+        /**
+         * Se class = on entao alterar status para off e salvar 2 no banco de dados
+         */
+        $('#par_'+id).children().children().prop('class','fa fa-toggle-off');
+    }
 }
+
+/**
+ * Responsavel por salvar status da parcela
+ * @param {integer} id 
+ */
+function updateStatusParcela( id , valor ){
+
+    dados = "ID="+id;
+    dados += "&REALIZADO="+valor;
+    dados += "&CL=services/Parcela";
+    
+    $.ajax(
+    {
+        url:'ajax/update.php',
+        type:'post',
+        dataType:'json',
+        data: dados,
+        success:(dados)=>
+        {
+            return dados;
+        },
+        error:(e)=>
+        {
+            console.log('Error: ' + e.status, e.statusText);
+        }        
+    })   
+}
+
+getLocatario();
+getImovel();
+getTaxaAdm();
+getTable();
+ 

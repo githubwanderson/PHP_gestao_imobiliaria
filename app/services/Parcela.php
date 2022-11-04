@@ -71,7 +71,7 @@ class Parcela{
      */
 
     public function setId( $ID ){
-        $this->id = $ID;
+        $this->ID = $ID;
     }
 
     public function getId(){
@@ -139,7 +139,9 @@ class Parcela{
      * @var $duracao
      * @var $data_inicio
      */ 
-    public function cadastrarParcelas(){    
+    public function cadastrarParcelas(){   
+        
+        require_once __DIR__.'/../database/Database.php';
 
         $db = new Database('contrato_parcela');
 
@@ -187,6 +189,28 @@ class Parcela{
             $valorPrimeiraMensalidade = $this->getValor();
         }
         return $valorPrimeiraMensalidade;
+    }
+
+    /**
+     * Metodo responsavel por povoar o objeto com array
+     */
+    public function setDados( $arr = [] ){
+        $this->setId( $arr['ID'] );  
+        $this->setRealizado( $arr['REALIZADO'] );
+    }
+
+    /**
+     * Metodo responsavel por atualizar o status de uma parcela     * 
+     */
+    public function update(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        $db = new Database('contrato_parcela');
+
+        return $db->update( 'ID = '.$this->getId(), [
+            'REALIZADO'    => $this->getRealizado()          
+        ]);
     }
 
 }
