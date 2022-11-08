@@ -58,4 +58,20 @@ class Locatario extends Cliente{
 
         return $this->getId();
     }
+
+    /**
+     * Metodo responsavel por atualizar um Locador
+     */
+    public function update(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        $db = new Database('cliente');
+
+        return $db->update( 'ID = '.$this->getId(), [
+            'NOME'     => $this->getNome(),
+            'EMAIL'    => $this->getEmail(),
+            'TELEFONE' => $this->getTelefone()
+        ]);
+    }
 }

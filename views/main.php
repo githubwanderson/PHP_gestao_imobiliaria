@@ -2,7 +2,7 @@
 
     <section>
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal">
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="btnNovo">
         Novo
       </button>
     </section>
@@ -31,7 +31,6 @@
     <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="modalLabel">
-          <?=$dataPage->getTituloModal()?>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -47,9 +46,7 @@
 
 
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-success" id="btnSubmit">Salvar</button>
+      <div class="modal-footer" id="modalFooter">        
       </div>
     </div>
   </div>

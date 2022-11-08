@@ -99,6 +99,7 @@ abstract class Cliente{
      * Metodo responsavel por povoar o objeto com array
      */
     public function setDadosCliente( $arr = [] ){
+        if(isset($arr['ID']))$this->setId( $arr['ID'] );
         $this->setNome( $arr['NOME'] );
         $this->setEmail( $arr['EMAIL'] );
         $this->setTelefone( $arr['TELEFONE']);

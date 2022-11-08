@@ -12,16 +12,16 @@ function submitNewForm()
     else
     {   
         dados = $('#form').serialize();
-        dados = dados + "&CL=Locatario";
+        dados = dados + "&CL=Locador";
         
         $.ajax(
         {
             url:'ajax/salvar.php',
             type:'post',
             dataType:'json',
-            data: dados,   
+            data: dados,
             success:(dados)=>
-            {                
+            {
                 limparFormulario();
                 getTable();
                 alert('Registro ID:'+dados+' salvo com sucesso.');
@@ -32,7 +32,7 @@ function submitNewForm()
             }
         });
     }
-};  
+};    
 
 /**
  * Limpar formulario
@@ -50,41 +50,46 @@ function limparFormulario()
  * Responsavel por validar o form
  * @return bollean
  */
- function validaForm(){
+function validaForm(){
 
-    switch (true) {
+switch (true) {
 
-        case $('input[name=NOME]').val()=='':
-            return false;
-            break;
+    case $('input[name=NOME]').val()=='':
+        return false;
+        break;
 
-        case $('input[name=EMAIL]').val()=='':
-            return false;
-            break;
+    case $('input[name=EMAIL]').val()=='':
+        return false;
+        break;
 
-        case $('input[name=TELEFONE]').val()=='':
-            return false;
-            break;
-    
-        default:
-            return true
-            break;
-    }
+    case $('input[name=TELEFONE]').val()=='':
+        return false;
+        break;
+
+    case $('input[name=DIA_REPASSE]').val()=='':
+        return false;
+        break;
+
+    default:
+        return true
+        break;
+}
 }
 
 /**
- * buscar lista de Locatario e preencher tabela
+ * buscar lista de Locador e preencher tabela
  */
 function getTable()
 {
     dados = [];
     dados[0]   = "cliente"
-    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 2"; // TIPO = 2 LOCATARIO
+    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 1 LOCADOR
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
-    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE";
+    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE , cliente.DIA_REPASSE";
 
+    // Verificar se ha registro no banco
     $.ajax(
     {
         url:'ajax/tabela.php',
@@ -99,7 +104,7 @@ function getTable()
             }
             else
             {                         
-                $('#tbody').html('<tr><td colspan="5">Não encontrado registros para tabela.</td></tr>');
+                $('#tbody').html('<tr><td colspan="6">Não encontrado registros para tabela.</td></tr>');
             }
         },
         error:(e)=>
@@ -109,11 +114,6 @@ function getTable()
     });
 }
 
-/**
- * Carregar dados da tabela
- * Lista de locatários
- * @param array retorno da função getTable()
- */
 function preenchaTabela(dados)
 {
     $('#tbody').html('');
@@ -126,12 +126,12 @@ function preenchaTabela(dados)
 
         if(line=0)
         {
-            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+link_editar+'</td>'; 
+            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+v.DIA_REPASSE+'</td>'+'<td>'+link_editar+'</td>';     
             line + '</tr>';  
         }
         else
         {
-            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+link_editar+'</td>';   
+            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+v.DIA_REPASSE+'</td>'+'<td>'+link_editar+'</td>';    
             line + '</tr>';  
         }  
         body = body == false ? line : body + line;
@@ -146,8 +146,8 @@ function preenchaTabela(dados)
  * altera titulo do form 
  * altera id para ação do btn submit
  */
-$('#btnNovo').click(function(){
-    $('#modalLabel').html("NOVO LOCATÁRIO");
+ $('#btnNovo').click(function(){
+    $('#modalLabel').html("NOVO LOCADOR");
 
     $('#modalFooter').html('');
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
@@ -186,7 +186,7 @@ function getDados( id ){
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
-    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE";
+    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE , cliente.DIA_REPASSE";
 
     $.ajax(
         {
@@ -202,6 +202,7 @@ function getDados( id ){
                     $("[name=NOME]").val(dados[0].NOME);
                     $("[name=EMAIL]").val(dados[0].EMAIL);
                     $("[name=TELEFONE]").val(dados[0].TELEFONE);
+                    $("[name=DIA_REPASSE]").val(dados[0].DIA_REPASSE);
                 }
                 else
                 {                         
@@ -213,7 +214,7 @@ function getDados( id ){
                 console.log(e.status, e.statusText);
             }   
         });
-}
+} 
 
 /**
  * Responsavel por salvar dados do formulario em editar
@@ -227,8 +228,8 @@ function submitEditForm(){
     }
     else
     {   
-         dados = $('#form').serialize();
-        dados = dados + "&CL=entities/Locatario";
+        dados = $('#form').serialize();
+        dados = dados + "&CL=entities/Locador";
 
         $.ajax(
         {
@@ -246,11 +247,10 @@ function submitEditForm(){
                 console.log('Error: ' + e.status, e.statusText);
             }        
         });
-    }
+    }  
 }
 
 /**
  * Funções de inicio
  */
 getTable();
-

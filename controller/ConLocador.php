@@ -13,19 +13,19 @@ class ConLocador{
     public static $titulo = 'Locador';
 
     /**
-     * Nome do titulo da modal
-     */
-    public static $tituloModal = 'Dados do novo Locador';
-
-    /**
      * Nome do arquivo JS 
      */
-    public static $js = 'asset/js/locatador.js'; 
+    public static $js = 'asset/js/locador.js'; 
 
     /**
      * Formulario com os campos de Locatario
      */
-    public static $form = '<div class="form-group">
+    public static $form = '<div class="form-group" style="display:none">
+                                <label>ID</label>
+                                <input type="text" class="form-control" name="ID">
+                            </div>
+                            
+                            <div class="form-group">
                                 <label>Nome</label>
                                 <input type="text" class="form-control" name="NOME">
                             </div>
@@ -56,10 +56,6 @@ class ConLocador{
 
     public function getTitulo(){
         return self::$titulo;
-    }
-
-    public function getTituloModal(){
-        return self::$tituloModal;
     }
 
     public function getForm(){
