@@ -52,28 +52,28 @@ function limparFormulario()
  */
 function validaForm(){
 
-switch (true) {
+    switch (true) {
 
-    case $('input[name=NOME]').val()=='':
-        return false;
-        break;
+        case $('input[name=NOME]').val()=='':
+            return false;
+            break;
 
-    case $('input[name=EMAIL]').val()=='':
-        return false;
-        break;
+        case $('input[name=EMAIL]').val()=='':
+            return false;
+            break;
 
-    case $('input[name=TELEFONE]').val()=='':
-        return false;
-        break;
+        case $('input[name=TELEFONE]').val()=='':
+            return false;
+            break;
 
-    case $('input[name=DIA_REPASSE]').val()=='':
-        return false;
-        break;
+        case $('input[name=DIA_REPASSE]').val()=='':
+            return false;
+            break;
 
-    default:
-        return true
-        break;
-}
+        default:
+            return true
+            break;
+    }
 }
 
 /**
@@ -148,7 +148,7 @@ function preenchaTabela(dados)
  */
  $('#btnNovo').click(function(){
     $('#modalLabel').html("NOVO LOCADOR");
-
+    limparFormulario();
     $('#modalFooter').html('');
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
     btnModal += '<button type="button" class="btn btn-success" onclick=submitNewForm()>Salvar</button>';
@@ -164,8 +164,8 @@ function preenchaTabela(dados)
  */
 function editar( id ){
 
-    $('#modalLabel').html("Editar Locatário - ID: " + id);
-
+    $('#modalLabel').html("EDITAR LOCADOR - ID: " + id);
+    limparFormulario();
     $('#modalFooter').html('');    
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
     btnModal += '<button type="button" class="btn btn-success" onclick=submitEditForm()>Salvar</button>';

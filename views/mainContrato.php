@@ -1,38 +1,36 @@
 <main>
 
-    <section>
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal">
-        Novo
-      </button>
+  <section>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="btnNovo">
+      Novo
+    </button>
+  </section>
 
-    </section>
+  <section>
+    <div class="table-responsive text-center">
+      <table class="table table-striped table-sm table-hover mt-3">
 
-    <section>
-      <div class="table-responsive text-center">
-        <table class="table table-striped table-sm table-hover mt-3">
+          <thead>
+              <?=$dataPage->getHeadTabela()?>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+          <tfoot>
+          </tfoot>
 
-            <thead>
-                <?=$dataPage->getHeadTabela()?>
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-            <tfoot>
-            </tfoot>
-
-        </table>
-      </div>
-    </section>
+      </table>
+    </div>
+  </section>
 
 </main>
 
-<!-- Modal -->
+<!-- Modal form -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="modalLabel">
-          <?=$dataPage->getTituloModal()?>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -40,23 +38,20 @@
       </div>
       <div class="modal-body">
         
-        <form method="post" id="form">
+        <form id="form">
 
             <?=$dataPage->getForm()?>
 
         </form>
 
-
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-success" id="btnSubmit">Salvar</button>
+      <div class="modal-footer" id="modalFooter">        
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal parcela -->
 <div class="modal fade" id="modalParcela" tabindex="-1" role="dialog" aria-labelledby="modalParcela" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content bg-dark">

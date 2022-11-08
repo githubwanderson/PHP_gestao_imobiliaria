@@ -1,27 +1,27 @@
 <main>
 
-    <section>
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="btnNovo">
-        Novo
-      </button>
-    </section>
+  <section>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="btnNovo">
+      Novo
+    </button>
+  </section>
 
-    <section>
-      <div class="table-responsive text-center">
-        <table class="table table-striped table-sm table-hover mt-3">
+  <section>
+    <div class="table-responsive text-center">
+      <table class="table table-striped table-sm table-hover mt-3">
 
-            <thead class='mensalidade'>
-                <?=$dataPage->getHeadTabela()?>
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-            <tfoot>
-            </tfoot>
+          <thead class='mensalidade'>
+              <?=$dataPage->getHeadTabela()?>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+          <tfoot>
+          </tfoot>
 
-        </table>
-      </div>
-    </section>
+      </table>
+    </div>
+  </section>
 
 </main>
 
@@ -43,7 +43,6 @@
             <?=$dataPage->getForm()?>
 
         </form>
-
 
       </div>
       <div class="modal-footer" id="modalFooter">        

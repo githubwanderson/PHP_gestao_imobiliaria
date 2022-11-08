@@ -148,7 +148,7 @@ function preenchaTabela(dados)
  */
 $('#btnNovo').click(function(){
     $('#modalLabel').html("NOVO LOCATÁRIO");
-
+    limparFormulario();
     $('#modalFooter').html('');
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
     btnModal += '<button type="button" class="btn btn-success" onclick=submitNewForm()>Salvar</button>';
@@ -164,8 +164,8 @@ $('#btnNovo').click(function(){
  */
 function editar( id ){
 
-    $('#modalLabel').html("Editar Locatário - ID: " + id);
-
+    $('#modalLabel').html("EDITAR LOCATÁRIO - ID: " + id);
+    limparFormulario();
     $('#modalFooter').html('');    
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
     btnModal += '<button type="button" class="btn btn-success" onclick=submitEditForm()>Salvar</button>';
