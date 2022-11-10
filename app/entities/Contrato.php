@@ -209,7 +209,7 @@ class Contrato{
     /**
      * metodo responsavel por cadastrar o obj no banco de dados
      */
-    public function Cadastrar(){
+    public function cadastrar(){
 
         require_once __DIR__.'/../database/Database.php';
         require_once __DIR__.'/../services/Mensalidade.php';

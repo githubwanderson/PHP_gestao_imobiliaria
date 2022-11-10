@@ -446,7 +446,7 @@ function updateStatusParcela( id , valor ){
  * altera titulo do form 
  * altera id para ação do btn submit
  */
- $('#btnNovo').click(function(){
+$('#btnNovo').click(function(){
     $('#modalLabel').html("NOVO CONTRATO");
     limparFormulario();
     $('#modalFooter').html('');
@@ -467,7 +467,7 @@ function updateStatusParcela( id , valor ){
  */
 function visualizar( id ){
 
-    $('#modalLabel').html("DADOS DO IMÓVEL - ID: " + id);
+    $('#modalLabel').html("DADOS DO CONTRATO - ID: " + id);
     limparFormulario();
     $('#modalFooter').html('');    
     btnModal = '<button type="button" class="btn btn-info" data-dismiss="modal">Fechar</button>';

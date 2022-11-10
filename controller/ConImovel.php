@@ -36,7 +36,7 @@ class Conimovel{
                             </div>';
 
     /**
-     * *********** GETTERS AND SETTERS ***********
+     * *********** GETTERS ***********
      */
 
     public function getInclude(){

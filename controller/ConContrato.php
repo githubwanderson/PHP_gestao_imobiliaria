@@ -75,7 +75,7 @@ class ConContrato{
                             </div>';
 
     /**
-     * *********** GETTERS AND SETTERS ***********
+     * *********** GETTERS ***********
      */
 
     public function getInclude(){
@@ -95,7 +95,7 @@ class ConContrato{
     }
 
     /**
-     * Metodo responsavel por gerar o head da tabela
+     * responsavel por gerar o head da tabela
      */
     public function getHeadTabela(){
 
@@ -112,7 +112,5 @@ class ConContrato{
             </tr>
             ';
     }
-
-
 
 }
