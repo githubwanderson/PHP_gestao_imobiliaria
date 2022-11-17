@@ -99,27 +99,10 @@ abstract class Cliente{
      * Metodo responsavel por povoar o objeto com array
      */
     public function setDadosCliente( $arr = [] ){
+        if(isset($arr['ID']))$this->setId( $arr['ID'] );
         $this->setNome( $arr['NOME'] );
         $this->setEmail( $arr['EMAIL'] );
         $this->setTelefone( $arr['TELEFONE']);
-    }
-
-    /**
-     * metodo responsavel por cadastrar o obj no banco de dados
-     */
-    public function Cadastrar(){
-
-        require_once __DIR__.'/../database/Database.php';
-
-        // Data do cadastro
-        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
-
-        //inserir no banco
-        $db = new Database('cliente');
-        $this->setId( $db->insert(get_object_vars($this) ) );
-
-        //retornar sucesso
-        return $this->getId();
     }
 
 }

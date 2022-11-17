@@ -13,11 +13,6 @@ class Conimovel{
     public static $titulo = 'Imóvel';
 
     /**
-     * Nome do titulo da modal
-     */
-    public static $tituloModal = 'Dados do novo imóvel';
-
-    /**
      * Nome do arquivo JS 
      */
     public static $js = 'asset/js/imovel.js'; 
@@ -25,7 +20,12 @@ class Conimovel{
     /**
      * Formulario com os campos de Locatario
      */
-    public static $form = '<div class="form-group">
+    public static $form = '<div class="form-group" style="display:none">
+                                <label>ID</label>
+                                <input type="text" class="form-control" name="ID">
+                            </div>
+
+                            <div class="form-group">
                                 <label>Locador ( Proprietário ) </label>
                                 <select id="ID_CLIENTE" name="ID_CLIENTE" class="form-control"></select>
                             </div>
@@ -36,7 +36,7 @@ class Conimovel{
                             </div>';
 
     /**
-     * *********** GETTERS AND SETTERS ***********
+     * *********** GETTERS ***********
      */
 
     public function getInclude(){
@@ -45,10 +45,6 @@ class Conimovel{
 
     public function getTitulo(){
         return self::$titulo;
-    }
-
-    public function getTituloModal(){
-        return self::$tituloModal;
     }
 
     public function getForm(){
@@ -69,7 +65,7 @@ class Conimovel{
                 <th>ID</th> 
                 <th>LOCADOR</th> 
                 <th>ENDEREÇO</th> 
-                <th><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th>
+                <th>EDITAR</th>
             </tr>
             ';
     }

@@ -9,7 +9,7 @@ class Locador extends Cliente{
      * valor 1 = LOCADOR
      * @var int
      */
-    private $TIPO_CLIENTE = 1; 
+    private $TIPO_CLIENTE = 1;
 
     /**
      * Dia para repasse do aluguel
@@ -81,6 +81,52 @@ class Locador extends Cliente{
                         ->fetchAll( PDO::FETCH_ASSOC );
         $this->setDados(  $result[0]  );
         return true;
+    }
+
+    /**
+     * metodo responsavel por cadastrar o obj no banco de dados
+     * @return integer id
+     */
+    public function Cadastrar(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        // Data do cadastro
+        $this->setCreatedDatatime( date('Y-m-d H:i:s') );
+
+        //inserir no banco
+        $db = new Database('cliente');
+
+        $this->setId( 
+            $db->insert(
+            [
+                'TIPO'        => $this->getTipo(),
+                'NOME'        => $this->getNome(),
+                'EMAIL'       => $this->getEmail(),
+                'TELEFONE'    => $this->getTelefone(),
+                'DIA_REPASSE' => $this->getDiaRepasse()
+            ])
+        );
+
+        //retornar 
+        return $this->getId();
+    }
+
+    /**
+     * Metodo responsavel por atualizar um Locador
+     */
+    public function update(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        $db = new Database('cliente');
+
+        return $db->update( 'ID = '.$this->getId(), [
+            'NOME'     => $this->getNome(),
+            'EMAIL'    => $this->getEmail(),
+            'TELEFONE' => $this->getTelefone(),
+            'DIA_REPASSE' => $this->getDiaRepasse()
+        ]);
     }
 
 }

@@ -1,40 +1,4 @@
-/**
- * buscar lista de Locador e preenche select
- */
-function getLocador()
-{
-    dados = [];
-    dados[0]   = "cliente"
-    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 1 LOCADOR
-    dados[2]   = null;
-    dados[3]   = null;
-    dados[4]   = null;
-    dados[5]   = "cliente.ID , cliente.NOME";
 
-    // Verificar se ha registro no banco
-    $.ajax(
-    {
-        url:'ajax/tabela.php',
-        type:'post',
-        dataType:'json',
-        data:{dados},
-        success:(dados)=>
-        {
-            if(dados.length > 0)
-            {
-                preenchaSelect('ID_CLIENTE',dados)
-            }
-            else
-            {                         
-                console.log('Sem dados de cliente "LOCADOR"');
-            }
-        },
-        error:(e)=>
-        {
-            console.log(e.status, e.statusText);
-        }   
-    });
-}
 
 /**
  * Salvar formulario novo cadastro
@@ -48,7 +12,7 @@ function submitNewForm()
     else
     {   
         dados = $('#form').serialize();
-        dados = dados + "&CL=Imovel";
+        dados = dados + "&CL=Locador";
         
         $.ajax(
         {
@@ -65,10 +29,10 @@ function submitNewForm()
             error:(e)=>
             {
                 console.log('Error: ' + e.status, e.statusText);
-            }        
+            }
         });
     }
-};
+};    
 
 /**
  * Limpar formulario
@@ -87,14 +51,22 @@ function limparFormulario()
  * @return bollean
  */
 function validaForm(){
- 
+
     switch (true) {
 
-        case $('input[name=ID_CLIENTE]').val()=='':
+        case $('input[name=NOME]').val()=='':
             return false;
             break;
 
-        case $('input[name=ENDERECO]').val()=='':
+        case $('input[name=EMAIL]').val()=='':
+            return false;
+            break;
+
+        case $('input[name=TELEFONE]').val()=='':
+            return false;
+            break;
+
+        case $('input[name=DIA_REPASSE]').val()=='':
             return false;
             break;
 
@@ -105,28 +77,17 @@ function validaForm(){
 }
 
 /**
- * Preencher select do modal
- */
-function preenchaSelect(idSelect,array)
-{
-    $.each(array, function( n , v )
-    {
-        document.getElementById(idSelect).innerHTML += '<option value='+v.ID+'>'+v.NOME+'</option>';
-    });
-}
-
-/**
- * buscar lista de Locatario e preencher tabela
+ * buscar lista de Locador e preencher tabela
  */
 function getTable()
 {
     dados = [];
-    dados[0]   = "imovel"
-    dados[1]   = "imovel.ATIVO = 1"; 
-    dados[2]   = "cliente b ON b.ID = imovel.ID_CLIENTE";
+    dados[0]   = "cliente"
+    dados[1]   = "cliente.ATIVO = 1 AND cliente.TIPO = 1"; // TIPO = 1 LOCADOR
+    dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
-    dados[5]   = "imovel.ID , b.NOME , imovel.ENDERECO";
+    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE , cliente.DIA_REPASSE";
 
     // Verificar se ha registro no banco
     $.ajax(
@@ -143,7 +104,7 @@ function getTable()
             }
             else
             {                         
-                $('#tbody').html('<tr><td colspan="4">Não encontrado registros para tabela.</td></tr>');
+                $('#tbody').html('<tr><td colspan="6">Não encontrado registros para tabela.</td></tr>');
             }
         },
         error:(e)=>
@@ -153,10 +114,6 @@ function getTable()
     });
 }
 
-/**
- * Preencher a tabela com dados de imoveis + locador
- * @param {*} dados 
- */
 function preenchaTabela(dados)
 {
     $('#tbody').html('');
@@ -169,12 +126,12 @@ function preenchaTabela(dados)
 
         if(line=0)
         {
-            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+link_editar+'</td>';    
+            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+v.DIA_REPASSE+'</td>'+'<td>'+link_editar+'</td>';     
             line + '</tr>';  
         }
         else
         {
-            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+link_editar+'</td>';    
+            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.EMAIL+'</td>'+'<td>'+v.TELEFONE+'</td>'+'<td>'+v.DIA_REPASSE+'</td>'+'<td>'+link_editar+'</td>';    
             line + '</tr>';  
         }  
         body = body == false ? line : body + line;
@@ -185,12 +142,12 @@ function preenchaTabela(dados)
 }
 
 /**
- * Novo imovel
+ * Novo cadastro
  * altera titulo do form 
  * altera id para ação do btn submit
  */
  $('#btnNovo').click(function(){
-    $('#modalLabel').html("NOVO IMÓVEL");
+    $('#modalLabel').html("NOVO LOCADOR");
     limparFormulario();
     $('#modalFooter').html('');
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
@@ -199,7 +156,7 @@ function preenchaTabela(dados)
 })
 
 /**
- * Editar imovel
+ * Editar cadastro
  * altera titulo do form
  * altera id para ação do btn submit
  * carrega dados do id
@@ -207,7 +164,7 @@ function preenchaTabela(dados)
  */
 function editar( id ){
 
-    $('#modalLabel').html("EDITAR IMÓVEL - ID: " + id);
+    $('#modalLabel').html("EDITAR LOCADOR - ID: " + id);
     limparFormulario();
     $('#modalFooter').html('');    
     btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
@@ -224,12 +181,12 @@ function editar( id ){
 function getDados( id ){
 
     dados = [];
-    dados[0]   = "imovel"
-    dados[1]   = "imovel.ID = " + id; 
+    dados[0]   = "cliente"
+    dados[1]   = "cliente.ID = " + id; 
     dados[2]   = null;
     dados[3]   = null;
     dados[4]   = null;
-    dados[5]   = "imovel.ID , imovel.ID_CLIENTE , imovel.ENDERECO";
+    dados[5]   = "cliente.ID , cliente.NOME , cliente.EMAIL , cliente.TELEFONE , cliente.DIA_REPASSE";
 
     $.ajax(
         {
@@ -242,8 +199,10 @@ function getDados( id ){
                 if(dados.length > 0)
                 {
                     $("[name=ID]").val(dados[0].ID);
-                    $("[name=ID_CLIENTE]").val(dados[0].ID_CLIENTE);
-                    $("[name=ENDERECO]").val(dados[0].ENDERECO);
+                    $("[name=NOME]").val(dados[0].NOME);
+                    $("[name=EMAIL]").val(dados[0].EMAIL);
+                    $("[name=TELEFONE]").val(dados[0].TELEFONE);
+                    $("[name=DIA_REPASSE]").val(dados[0].DIA_REPASSE);
                 }
                 else
                 {                         
@@ -270,7 +229,7 @@ function submitEditForm(){
     else
     {   
         dados = $('#form').serialize();
-        dados = dados + "&CL=entities/Imovel";
+        dados = dados + "&CL=entities/Locador";
 
         $.ajax(
         {
@@ -292,9 +251,6 @@ function submitEditForm(){
 }
 
 /**
- * metodos necessarios no carregamento da pagina
+ * Funções de inicio
  */
-getLocador();
 getTable();
-
-

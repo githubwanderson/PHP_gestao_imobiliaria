@@ -1,5 +1,5 @@
 /**
- * buscar lista de Locador
+ * Responsavel por buscar lista de Locador
  */
 function getLocatario()
 {
@@ -37,7 +37,7 @@ function getLocatario()
 }
 
 /**
- * buscar lista de imoveis join proprietarios
+ * Responsavel por buscar lista de imoveis join proprietarios
  */
 function getImovel()
 {
@@ -49,7 +49,6 @@ function getImovel()
     dados[4]   = null;
     dados[5]   = "imovel.ID , CONCAT( b.NOME , ' | ' , imovel.ENDERECO ) NOME";
 
-    // Verificar se ha registro no banco
     $.ajax(
     {
         url:'ajax/tabela.php',
@@ -74,46 +73,52 @@ function getImovel()
     });
 }
 
+TAXA_ADM = 0;
 /**
- * buscar lista de imoveis join proprietarios
+ * Responsavel por buscar lista de imoveis join proprietarios
  */
 function getTaxaAdm()
 {
-    dados = [];
-    dados[0]   = "AdmTaxa";
-    dados[1]   = "services"; 
-    dados[2]   = "getValor"; 
+    if(TAXA_ADM == 0){   
+        dados = [];
+        dados[0]   = "AdmTaxa";
+        dados[1]   = "services"; 
+        dados[2]   = "getValor"; 
 
-    // Verificar se ha registro no banco
-    $.ajax(
-    {
-        url:'ajax/class.php',
-        type:'post',
-        dataType:'json',
-        data:{dados},
-        success:(dados)=>
+        $.ajax(
         {
-            if(dados.length > 0)
+            url:'ajax/class.php',
+            type:'post',
+            dataType:'json',
+            data:{dados},
+            success:(dados)=>
             {
-                $('#VALOR_TX_ADM').val(dados)
-            }
-            else
-            {                         
-                console.log('Sem dados da taxa da ADM');
-            }
-        },
-        error:(e)=>
-        {
-            console.log(e.status, e.statusText);
-        }   
-    });
+                if(dados.length > 0)
+                {
+                    TAXA_ADM = dados;
+                    $('#VALOR_TX_ADM').val(dados);
+                }
+                else
+                {                         
+                    console.log('Sem dados da taxa da ADM');
+                }
+            },
+            error:(e)=>
+            {
+                console.log(e.status, e.statusText);
+            }   
+        });
+    }
+    else
+    {
+        $('#VALOR_TX_ADM').val(TAXA_ADM);
+    }
 }
 
-
 /**
- * Salvar formulario
+ * Salvar formulario novo cadastro
  */
-$('#btnSubmit').click(function()
+function submitNewForm()
 {
     if(!validaForm())
     {
@@ -131,15 +136,9 @@ $('#btnSubmit').click(function()
             dataType:'json',
             data: dados,
             success:(dados)=>
-            {
-                $('#form input').each(function() {
-                    $(this).val(''); 
-                });
-
+            {         
+                limparFormulario();
                 getTable();
-
-                $('.modal').modal('hide');
-
                 alert('Registro ID:'+dados+' salvo com sucesso.');
             },
             error:(e)=>
@@ -148,10 +147,22 @@ $('#btnSubmit').click(function()
             }        
         });
     }
-}); 
+}; 
 
 /**
- * Preencher select do modal
+ * Limpar formulario
+ */
+function limparFormulario()
+{
+    $('#form input').each(function() {
+        $(this).val(''); 
+    });
+
+    $('.modal').modal('hide');
+}
+
+/**
+ * Responsavel por preencher select do modal
  */
 function preenchaSelect(idSelect,array)
 {
@@ -162,7 +173,7 @@ function preenchaSelect(idSelect,array)
 }
 
 /**
- * Validar form
+ * Responsavel por validar o form
  * @return bollean
  */
 function validaForm(){
@@ -208,7 +219,8 @@ function validaForm(){
 }
 
 /**
- * buscar lista de Locatario e preencher tabela
+ * Responsavel por buscar lista de Locatario e preencher tabela
+ * @param array 
  */
 function getTable()
 {
@@ -253,18 +265,18 @@ function preenchaTabela(dados)
     body = false;
     $.each(dados, function(i,v)
     {           
-        link_editar         = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_repasse        = "<a id="+v.ID+" class='btn btn_edit'><i class='fa fa-edit' aria-hidden='true'></i></a>";
-        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' onclick='mensalidade("+v.ID+")'><i class='fa fa-edit' aria-hidden='true'></i></a>";
+        link_visualizar     = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modal' onclick=visualizar("+v.ID+")><i class='fa fa-eye' aria-hidden='true'></i></a>";
+        link_repasse        = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='repasse("+v.ID+")'><i class='fa fa-table' aria-hidden='true'></i></a>";
+        link_mensalidade    = "<a id="+v.ID+" class='btn btn_edit' data-toggle='modal' data-target='#modalParcela' onclick='mensalidade("+v.ID+")'><i class='fa fa-table' aria-hidden='true'></i></a>";
 
         if(line=0)
         {
-            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_editar+'</td>';    
+            line = '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_visualizar+'</td>';    
             line + '</tr>';  
         }
         else
         {
-            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_editar+'</td>';    
+            line = line + '<tr><td>'+v.ID+'</td>'+'<td>'+v.NOME+'</td>'+'<td>'+v.ENDERECO+'</td>'+'<td>'+v.DT_INICIO+'</td>'+'<td>'+v.DT_FIM+'</td>'+'<td>'+link_mensalidade+'</td>'+'<td>'+link_repasse+'</td>'+'<td>'+link_visualizar+'</td>';    
             line + '</tr>';  
         }  
         body = body == false ? line : body + line;
@@ -273,11 +285,258 @@ function preenchaTabela(dados)
     $('#tbody').html(body);
 }
 
-getLocatario()
-getImovel()
-getTaxaAdm()
-getTable()
+/**
+ * Responsavel por direcionar o update do status mensalidade
+ * @param {integer} id 
+ */
+function mensalidade( id ){
 
-function mensalidade( p ){
-    console.log(p);
+    // Regra banco de dados: PARCELA_TIPO : 1=MENSALIDADE , 2=REPASSE
+    tipo = 1;
+
+    // preencher titulo modal
+    $('#modalParcelaTilulo').html('PARCELA - Mensalidade');
+
+    // preencher titulo table modal
+    theadParcela = '<tr><th>PARCELA</th><th>VALOR (R$)</th><th>VENCIMENTO</th><th>REALIZADO</th></tr>'
+    $('#theadParcela').html(theadParcela);
+
+    parcelaSearch( id , tipo );
+    
 }
+
+/**
+ * Responsavel por direcionar o update do status repasse
+ * @param {integer} id 
+ */
+function repasse( id ){
+
+    // Regra banco de dados: PARCELA_TIPO : 1=MENSALIDADE , 2=REPASSE
+    tipo = 2;
+
+    // preencher titulo modal
+    $('#modalParcelaTilulo').html('PARCELA - Repasse');
+
+    // preencher titulo table modal
+    theadParcela = '<tr><th>PARCELA</th><th>VALOR (R$)</th><th>VENCIMENTO</th><th>REALIZADO</th></tr>'
+    $('#theadParcela').html(theadParcela);
+
+    parcelaSearch( id , tipo );    
+}
+
+/**
+ * Responsavel por carregar a modal com dados da parcela
+ */
+function parcelaSearch( id , tipo ){
+    
+    // pegar dados
+    // preencher tabela modal
+
+    dados = [];
+    dados[0]   = "contrato_parcela"
+    dados[1]   = "contrato_parcela.ID_CONTRATO =" + id + " AND contrato_parcela.TIPO = " + tipo; 
+    dados[2]   = null;
+    dados[3]   = null;
+    dados[4]   = null;
+    dados[5]   = "contrato_parcela.ID , contrato_parcela.PARCELA , contrato_parcela.VALOR , DATE_FORMAT( contrato_parcela.DT_VENCIMENTO, '%d/%m/%Y' ) DT_VENCIMENTO , contrato_parcela.REALIZADO";
+
+    // Verificar se ha registro no banco
+    $.ajax(
+    {
+        url:'ajax/tabela.php',
+        type:'post',
+        dataType:'json',
+        data:{dados},
+        success:(dados)=>
+        {
+            if(dados.length > 0)
+            {
+                preenchaTabelaParcela(dados)
+            }
+            else
+            {                         
+                $('#tbodyParcela').html('<tr><td colspan="8">Não encontrado registros para tabela.</td></tr>');
+            }
+        },
+        error:(e)=>
+        {
+            console.log(e.status, e.statusText);
+        }   
+    });
+}
+
+function preenchaTabelaParcela( dados )
+{
+    $('#tbodyParcela').html('');
+
+    body = false;
+    $.each(dados, function(i,v)
+    {         
+        realizadoStatus = v.REALIZADO == 1 ? 'off' : 'on'; 
+        btnStatus = 
+            '<button type="button" id="par_'+v.ID+'" class="btn btn-dark" onclick="parcelaEditar('+v.ID+')">'
+            +'<span class="text-white" aria-hidden="true"><i class="fa fa-toggle-'+realizadoStatus+'" aria-hidden="true"></i></span>'
+            +'</button>';
+
+        line = '<tr><td>'+v.PARCELA+'</td>'+'<td>'+v.VALOR+'</td>'+'<td>'+v.DT_VENCIMENTO+'</td>'+'<td>'+btnStatus+'</td></tr>';    
+   
+        body = body == false ? line : body + line;
+    });   
+        
+    $('#tbodyParcela').html(body);
+}
+
+/**
+ * Responsavel por alterar o status de uma parcela
+ * @param {integer} id 
+ * Regra banco de dados: REALIZADO: 1=sim , 2=nao
+ * Atribuido as parcelas como 1=on e 2=off
+ */
+function parcelaEditar( id ){
+
+    btnClass  = $('#par_'+id).children().children().prop('class');
+
+    if(btnClass == 'fa fa-toggle-off')
+    {
+        updateStatusParcela( id , 2 )
+        /**
+         * Se class = off entao alterar status para on e salvar 1 no banco de dados
+         */
+        $('#par_'+id).children().children().prop('class','fa fa-toggle-on');
+    }
+    else
+    {
+        updateStatusParcela( id , 1 )
+        /**
+         * Se class = on entao alterar status para off e salvar 2 no banco de dados
+         */
+        $('#par_'+id).children().children().prop('class','fa fa-toggle-off');
+    }
+}
+
+/**
+ * Responsavel por salvar status da parcela
+ * @param {integer} id 
+ */
+function updateStatusParcela( id , valor ){
+
+    dados = "ID="+id;
+    dados += "&REALIZADO="+valor;
+    dados += "&CL=services/Parcela";
+    
+    $.ajax(
+    {
+        url:'ajax/update.php',
+        type:'post',
+        dataType:'json',
+        data: dados,
+        success:(dados)=>
+        {
+            return dados;
+        },
+        error:(e)=>
+        {
+            console.log('Error: ' + e.status, e.statusText);
+        }        
+    })   
+}
+
+/**
+ * Novo cadastro
+ * altera titulo do form 
+ * altera id para ação do btn submit
+ */
+$('#btnNovo').click(function(){
+    $('#modalLabel').html("NOVO CONTRATO");
+    limparFormulario();
+    $('#modalFooter').html('');
+    $("#div_dt_fim").hide();
+    getTaxaAdm();
+    $("form input").prop('readonly',false);
+    btnModal = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';
+    btnModal += '<button type="button" class="btn btn-success" onclick=submitNewForm()>Salvar</button>';
+    $('#modalFooter').html(btnModal);
+})
+
+/**
+ * Visualizar contrato
+ * altera titulo do form
+ * retira o btn submit
+ * carrega dados do id
+ * @param integer id
+ */
+function visualizar( id ){
+
+    $('#modalLabel').html("DADOS DO CONTRATO - ID: " + id);
+    limparFormulario();
+    $('#modalFooter').html('');    
+    btnModal = '<button type="button" class="btn btn-info" data-dismiss="modal">Fechar</button>';
+    $('#modalFooter').html(btnModal);
+
+    $("#div_dt_fim").show();
+
+    $("form input").prop('readonly',true);
+
+    getDados( id ) 
+}
+
+/**
+ * Pegar os dados do cliente e preencher form
+ * @param id integer
+ */
+function getDados( id ){
+
+    dados = [];
+    dados[0]   = "contrato"
+    dados[1]   = "contrato.ID = " + id; 
+    dados[2]   = null;
+    dados[3]   = null;
+    dados[4]   = null;
+    dados[5]   = "contrato.ID , contrato.ID_CLIENTE , contrato.ID_IMOVEL , contrato.DURACAO_MES ,contrato.DT_INICIO , contrato.DT_FIM , contrato.VALOR_ALUGUEL , contrato.VALOR_CONDOMINIO , contrato.VALOR_IPTU , contrato.VALOR_TX_ADM";
+
+
+    $.ajax(
+        {
+            url:'ajax/tabela.php',
+            type:'post',
+            dataType:'json',
+            data:{dados},
+            success:(dados)=>
+            {
+                if(dados.length > 0)
+                {
+                    $("[name=ID]").val(dados[0].ID);
+                    $("[name=ID_CLIENTE]").val(dados[0].ID_CLIENTE);
+                    $("[name=ID_IMOVEL]").val(dados[0].ID_IMOVEL);
+                    $("[name=DURACAO_MES]").val(dados[0].DURACAO_MES);
+                    $("[name=DT_INICIO]").val(dados[0].DT_INICIO);
+                    $("#DT_FIM").val(dados[0].DT_FIM);
+                    $("[name=VALOR_ALUGUEL]").val(dados[0].VALOR_ALUGUEL);
+                    $("[name=VALOR_CONDOMINIO]").val(dados[0].VALOR_CONDOMINIO);
+                    $("[name=VALOR_IPTU]").val(dados[0].VALOR_IPTU);
+                    $("#VALOR_TX_ADM").val(dados[0].VALOR_TX_ADM);                 
+
+
+
+                    console.log(dados)
+                }
+                else
+                {                         
+                    $('#modalLabel').html("Editar Locatário - ID: " + id + " **Não encontrado**");
+                }
+            },
+            error:(e)=>
+            {
+                console.log(e.status, e.statusText);
+            }   
+        });
+} 
+
+/**
+ * metodos necessarios no carregamento da pagina
+ */
+getLocatario();
+getImovel();
+getTaxaAdm();
+getTable();
+ 

@@ -8,7 +8,7 @@ class imovel{
      * identificador unico
      * @var integer
      */
-    private $id;    
+    private $ID;    
 
     /**
      * Identiicador do Locador
@@ -38,12 +38,12 @@ class imovel{
      * *********** GETTERS AND SETTERS ***********
      */
 
-    public function setId( $id ){
-        $this->id = $id;
+    public function setId( $ID ){
+        $this->ID = $ID;
     }
 
     public function getId(){
-        return $this->id;
+        return $this->ID;
     }
 
     public function setIdLocador( $ID_CLIENTE ){
@@ -74,6 +74,7 @@ class imovel{
      * Metodo responsavel por povoar o objeto com array
      */
     public function setDados( $arr = [] ){
+        if(isset($arr['ID']))$this->setId( $arr['ID'] );
         $this->setIdLocador( $arr['ID_CLIENTE'] );
         $this->setEndereco( $arr['ENDERECO'] );
     }
@@ -109,4 +110,18 @@ class imovel{
         return true;
     }
 
+    /**
+     * Metodo responsavel por atualizar um Locador
+     */
+    public function update(){
+
+        require_once __DIR__.'/../database/Database.php';
+
+        $db = new Database('imovel');
+
+        return $db->update( 'ID = '.$this->getId(), [
+            'ID_CLIENTE'  => $this->getIdLocador(),
+            'ENDERECO'    => $this->getEndereco()      
+        ]);
+    }
 }
