@@ -3,6 +3,11 @@
 
 ---
 
+Requisito:
+* Ao salvar um contrato gerar automaticamente as parcelas de repasse e mensalidade.
+
+---
+
 * Versão do servidor: 10.4.11-MariaDB - mariadb.org binary distribution;
 * PHP/7.4.6 Apache/2.4.43 (Win7-64);
 * MySQL server version: 5.5.5-10.4.11-MariaDB;
